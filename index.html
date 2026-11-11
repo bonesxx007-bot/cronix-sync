@@ -1,0 +1,1208 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Cronix Sync es un compañero de escritorio que se pone de mal humor si te atrasas: una mascota con pantalla, ánimo de 0 a 100, tareas desde una app Android y Bluetooth.">
+<meta name="theme-color" content="#010D23">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cronix Sync">
+<meta property="og:description" content="Cronix Sync es un compañero de escritorio que se pone de mal humor si te atrasas: una mascota con pantalla, ánimo de 0 a 100, tareas desde una app Android y Bluetooth.">
+<meta property="og:image" content="https://bonesxx007-bot.github.io/cronix-sync/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://bonesxx007-bot.github.io/cronix-sync/">
+<title>Cronix Sync</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: pagina de producto oscura, como la pantalla del Cronix. Cada seccion es una escena con un titular grande y una pieza viva (las caras corren con el mismo codigo que el dispositivo). */
+:root{
+  --night:#010D23;        /* Noche: fondo */
+  --deep:#011228;
+  --surface:#03223F;      /* Profundo: tarjetas */
+  --hair:#123A5E;
+  --text:#EEF4FA;
+  --muted:#93AAC2;
+  --brand:#038BBB;        /* Azul Cronix: rellenos y acciones */
+  --teal:#3FB4E4;         /* Azul Cronix claro: texto en azul */
+  --gold:#FCCB6F;         /* Oro: logros */
+  --amber:#E19F41;        /* Ambar: alarma */
+  --oled:#010812;
+  --screen-glow:#5CC8F0;  /* color de los pixeles de la pantalla (lo lee la cara) */
+  --glass:linear-gradient(180deg,rgba(10,50,86,.55),rgba(3,34,63,.35));
+  --edge:rgba(150,205,245,.10);
+  --f-display:"Sora","Segoe UI",system-ui,sans-serif;
+  --f-body:"Manrope","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --wrap:1100px;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:radial-gradient(1400px 700px at 50% -8%,rgba(3,139,187,.22),transparent 62%),radial-gradient(900px 500px at 92% 4%,rgba(252,203,111,.07),transparent 60%),var(--night);background-repeat:no-repeat;color:var(--text);font-family:var(--f-body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--teal)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.02em}
+p{margin:0}
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:max(20px,4vw)}
+section{padding-block:clamp(84px,12vw,150px);position:relative}
+.band{background:linear-gradient(180deg,rgba(3,34,63,.55),rgba(1,18,40,.55))}
+.band::before{content:"";position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(63,180,228,.45),transparent)}
+.eyebrow{font:600 13px var(--f-display);letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.big{font-size:clamp(38px,6.4vw,76px);font-weight:800;line-height:1.03;letter-spacing:-.03em;background:linear-gradient(180deg,#FFFFFF 35%,#9FD3EE);-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:.06em}
+.lead{font-size:clamp(19px,2.2vw,23px);color:var(--muted);line-height:1.5;max-width:44ch}
+.lead b{color:var(--text);font-weight:700}
+.head{display:grid;gap:18px;max-width:780px}
+.center{text-align:center}
+.center .head{margin-inline:auto;justify-items:center}
+.center .lead{margin-inline:auto}
+.card{background:var(--glass);border:1px solid var(--edge);border-radius:24px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:30;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--brand),var(--teal),var(--gold))}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--night) 72%,transparent);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--edge)}
+.nav .wrap{display:flex;align-items:center;gap:28px;height:54px}
+.brand{display:flex;align-items:center;gap:10px;font:800 15px var(--f-display);letter-spacing:.1em;color:var(--text);text-decoration:none;white-space:nowrap}
+.mark{width:24px;height:24px;fill:var(--brand)}
+.nav ul{display:flex;gap:22px;list-style:none;margin:0 0 0 auto;padding:0}
+.nav a.l{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;white-space:nowrap;transition:color .2s}
+.nav a.l:hover{color:var(--text)}
+.done-pill{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:99px;background:rgba(43,196,138,.12);border:1px solid rgba(43,196,138,.35);color:#7BE3B6;font:700 13px var(--f-body)}
+.done-pill::before{content:"";width:7px;height:7px;border-radius:50%;background:#2BC48A;box-shadow:0 0 10px #2BC48A}
+@media (max-width:860px){.nav ul{display:none}}
+
+/* hero */
+.hero{padding-block:clamp(48px,7vw,84px) clamp(70px,10vw,120px);text-align:center;overflow:hidden}
+.hero-mark{width:64px;height:64px;fill:var(--brand);display:block;margin:0 auto 26px;filter:drop-shadow(0 0 18px rgba(3,139,187,.8));animation:blinkmark 5s ease-in-out infinite}
+@keyframes blinkmark{0%,46%,54%,100%{transform:scaleY(1)}50%{transform:scaleY(.12)}}
+.hero h1{font-size:clamp(50px,9.5vw,118px);font-weight:800;line-height:.96;letter-spacing:-.04em;background:linear-gradient(180deg,#FFFFFF 30%,#7FC6EA);-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:.05em}
+.hero .lead{margin:22px auto 0;max-width:30ch;text-align:center}
+.hero .done-pill{margin-top:26px}
+.device{position:relative;margin:clamp(44px,6vw,70px) auto 0;width:min(580px,100%);aspect-ratio:77.2/52.2;border-radius:clamp(20px,3.4vw,32px);background:linear-gradient(160deg,rgba(255,255,255,.06),transparent 40%),linear-gradient(160deg,#0B3A63 0%,#03223F 55%,#021A33 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -1px 0 rgba(0,0,0,.6),0 60px 100px -40px rgba(0,0,0,.95),0 0 0 1px #1E4C78,0 0 120px -30px rgba(3,139,187,.55);padding:7% 8%;display:grid;grid-template-columns:1fr auto;grid-template-rows:auto 1fr auto;gap:4% 6%;text-align:left;animation:float 7s ease-in-out infinite}
+.device::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.08) 45%,transparent 60%);background-size:250% 100%;animation:sheen 7s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-8px)}}
+@keyframes sheen{0%{background-position:120% 0}60%,100%{background-position:-60% 0}}
+.device .logo{font:800 clamp(9px,1.7vw,14px) var(--f-display);letter-spacing:.16em;color:#3B6690;grid-column:1/-1}
+.screen{background:var(--oled);border-radius:9px;box-shadow:inset 0 0 0 1px #000,0 0 0 4px #050b12,0 0 0 5px #124068;aspect-ratio:2/1;overflow:hidden;position:relative}
+.screen canvas{width:100%;height:100%;display:block;image-rendering:pixelated;filter:drop-shadow(0 0 3px rgba(92,200,240,.7))}
+.screen::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px),linear-gradient(155deg,rgba(255,255,255,.08),transparent 40%);pointer-events:none}
+.grille{display:grid;grid-template-columns:repeat(3,8px);gap:6px;align-self:center;justify-self:center}
+.grille b{width:8px;height:8px;border-radius:50%;background:#050b12;box-shadow:inset 0 1px 2px #000}
+.grille b:nth-child(1),.grille b:nth-child(3),.grille b:nth-child(7),.grille b:nth-child(9){visibility:hidden}
+.keys{display:flex;gap:clamp(8px,2vw,14px);grid-column:1/-1;align-items:center}
+.keys button{width:clamp(24px,4.6vw,36px);aspect-ratio:1;border-radius:50%;border:0;background:linear-gradient(180deg,#0E3A62,#03223F);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 2px 4px rgba(0,0,0,.6);cursor:pointer;color:var(--muted);font:700 clamp(8px,1.4vw,11px)/1 var(--f-display)}
+.keys button:active{transform:translateY(1px)}
+.keys .led{margin-left:auto;width:12px;height:12px;border-radius:50%;background:var(--led,#0A8BC4);box-shadow:0 0 14px 3px var(--led,#0A8BC4);transition:background .6s,box-shadow .6s}
+.moods{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:30px}
+.chip{border:1px solid var(--edge);background:rgba(10,50,86,.45);color:var(--text);font:600 14px/1 var(--f-body);padding:11px 17px;border-radius:999px;cursor:pointer;transition:all .25s var(--ease);backdrop-filter:blur(10px)}
+.chip:hover{border-color:rgba(63,180,228,.5)}
+.chip[aria-pressed="true"]{background:var(--brand);color:var(--night);border-color:var(--brand);font-weight:800}
+.hint{margin-top:16px;font-size:13px;color:var(--muted)}
+
+/* problema */
+.split{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(32px,6vw,80px);align-items:center}
+.split>*{min-width:0}
+@media (max-width:860px){.split{grid-template-columns:1fr}}
+.compare{display:grid;gap:14px}
+.compare>div{padding:26px}
+.compare h3{font-size:18px;margin-bottom:12px}
+.compare ul{margin:0;padding:0;list-style:none;display:grid;gap:10px;color:var(--muted);font-size:15.5px}
+.compare li{display:flex;gap:10px}
+.compare li::before{content:"";flex:none;width:8px;height:8px;margin-top:.55em;border-radius:50%;background:var(--muted);opacity:.5}
+.compare .after{border-color:rgba(3,139,187,.45);background:radial-gradient(90% 120% at 0% 0%,rgba(3,139,187,.22),transparent 60%),var(--surface)}
+.compare .after h3{color:var(--teal)}
+.compare .after li::before{background:var(--teal);opacity:1}
+
+/* animo */
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:56px}
+.scale>div{padding:20px 16px;display:grid;gap:6px;min-width:0}
+.scale .dot{width:14px;height:14px;border-radius:50%;background:var(--c);box-shadow:0 0 16px var(--c)}
+.scale b{font:700 16px var(--f-display)}
+.scale small{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+@media (max-width:760px){.scale{grid-template-columns:repeat(2,1fr)}.scale>div:last-child{grid-column:1/-1}}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+@media (max-width:860px){.rules{grid-template-columns:1fr 1fr}}
+@media (max-width:500px){.rules{grid-template-columns:1fr}}
+.rule{display:flex;gap:16px;align-items:center;padding:18px 20px}
+.rule .n{font:800 30px var(--f-display);min-width:64px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.rule .n.up{color:var(--teal)}.rule .n.down{color:var(--amber)}
+.rule p{color:var(--muted);font-size:15px}
+
+/* estilos de ojos */
+.styles{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px}
+@media (max-width:860px){.styles{grid-template-columns:1fr}}
+.style{padding:18px 18px 22px;display:grid;gap:14px}
+.style .screen{border-radius:12px}
+.style h3{font-size:22px}
+.style p{color:var(--muted);font-size:15px}
+.moodline{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:24px}
+.moodline span{font:600 12px var(--f-body);color:var(--muted);padding:5px 10px;border-radius:99px;border:1px solid var(--edge);transition:all .3s}
+.moodline span.on{color:var(--night);background:var(--teal);border-color:var(--teal)}
+
+/* producto */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:56px}
+.tile{padding:clamp(22px,3vw,34px);display:flex;flex-direction:column;gap:10px;min-width:0;overflow:hidden;transition:transform .5s var(--ease),box-shadow .5s}
+.tile:hover{transform:translateY(-4px);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 30px 60px -30px rgba(3,139,187,.55)}
+.tile h3{font-size:clamp(20px,2.2vw,26px);line-height:1.15}
+.tile p{color:var(--muted);font-size:15px}
+.tile .stat{font:800 clamp(48px,6vw,72px)/1 var(--f-display);letter-spacing:-.04em;background:linear-gradient(135deg,var(--teal),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.s2{grid-column:span 2}.s3{grid-column:span 3}
+@media (max-width:900px){.bento{grid-template-columns:repeat(2,1fr)}.s2,.s3{grid-column:span 1}}
+@media (max-width:560px){.bento{grid-template-columns:1fr}.s2,.s3{grid-column:span 1}}
+.specs{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:6px}
+.specs td{padding:9px 0;border-top:1px solid var(--edge);color:var(--muted);vertical-align:top}
+.specs td:last-child{text-align:right;color:var(--text);font-weight:600;padding-left:12px}
+
+/* buddies */
+.duo{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(12px,3vw,36px);align-items:center;margin-top:56px}
+.duo .unit{display:grid;gap:12px;justify-items:center;min-width:0}
+.duo .screen{width:100%;max-width:360px;border-radius:12px}
+.duo .tag{font:600 13px var(--f-body);color:var(--muted)}
+.wire{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--muted);font:600 12px var(--f-body);min-width:96px}
+.wire .pulse{width:clamp(50px,9vw,110px);height:2px;background:linear-gradient(90deg,transparent,var(--teal),transparent);background-size:200% 100%;opacity:.25;transition:opacity .3s}
+.wire .pulse.on{opacity:1;animation:flow .8s linear infinite}
+.wire .pulse.rev{animation-direction:reverse}
+@keyframes flow{from{background-position:100% 0}to{background-position:-100% 0}}
+.wire .msg{min-height:1.3em;color:var(--teal);text-align:center;font-weight:800}
+@media (max-width:640px){.duo{grid-template-columns:1fr}.wire{flex-direction:row;min-height:30px}.wire .pulse{width:40px}}
+.gestos{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:34px}
+.gestos span{font-size:13px;font-weight:600;color:var(--muted);border:1px solid var(--edge);padding:8px 14px;border-radius:999px;transition:all .25s}
+.gestos span.on{color:var(--night);background:var(--brand);border-color:var(--brand);font-weight:800}
+
+/* app */
+.appwrap{display:grid;grid-template-columns:auto 1fr;gap:clamp(36px,7vw,90px);align-items:center;margin-top:56px}
+.appwrap>*{min-width:0}
+@media (max-width:860px){.appwrap{grid-template-columns:1fr;justify-items:center}}
+.phone{width:310px;max-width:100%;border-radius:50px;padding:11px;background:linear-gradient(160deg,#1A4A75,#03223F 40%,#010D23);box-shadow:0 0 0 1px #2A5A86,inset 0 1px 0 rgba(255,255,255,.2),0 60px 100px -40px rgba(0,0,0,.95),0 0 80px -30px rgba(3,139,187,.6)}
+.phone .in{border-radius:40px;background:radial-gradient(120% 50% at 50% 0%,rgba(43,196,138,.22),transparent 60%),var(--night);padding:44px 14px 14px;display:grid;gap:11px;position:relative;overflow:hidden}
+.phone .in::before{content:"";position:absolute;top:12px;left:50%;translate:-50% 0;width:88px;height:24px;border-radius:20px;background:#000}
+.p-top{display:flex;justify-content:space-between;align-items:center}
+.p-top b{font:800 24px var(--f-display);letter-spacing:-.03em}
+.p-conn{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--muted);padding:5px 9px;border-radius:99px;background:rgba(10,50,86,.5);border:1px solid var(--edge)}
+.p-conn::before{content:"";width:6px;height:6px;border-radius:50%;background:#34D399;box-shadow:0 0 8px #34D399}
+.phone .mini{border-radius:22px;padding:10px;background:linear-gradient(160deg,#0B3A63,#03223F 55%,#021A33);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 0 0 1px rgba(92,200,240,.14),0 0 40px -14px rgba(43,196,138,.7)}
+.phone .mini .screen{border-radius:8px}
+.p-stats{display:grid;grid-template-columns:1.3fr 1fr;gap:8px}
+.p-card{display:flex;align-items:center;gap:8px;padding:10px;border-radius:16px;background:rgba(10,50,86,.45);border:1px solid var(--edge);position:relative;min-width:0}
+.p-card small{display:block;font-size:10.5px;color:var(--muted);font-weight:600}
+.p-card b{font:800 14px var(--f-display)}
+.p-card.gold b{font-size:22px;color:var(--gold)}
+.p-ring{width:44px;height:44px;flex:none;transform:rotate(-90deg);fill:none;stroke-width:8}
+.p-ring circle{stroke:rgba(150,205,245,.12)}
+.p-ring .f{stroke:#2BC48A;stroke-linecap:round;stroke-dasharray:179 214;filter:drop-shadow(0 0 4px rgba(43,196,138,.7))}
+.p-num{position:absolute;left:10px;width:44px;text-align:center;font:800 14px var(--f-display)}
+.p-pet{border:1px solid var(--edge);border-radius:14px;padding:11px;background:rgba(10,50,86,.45);color:var(--teal);font:800 13px var(--f-body);cursor:pointer}
+.p-list{border-radius:16px;background:rgba(10,50,86,.45);border:1px solid var(--edge);overflow:hidden}
+.p-task{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:0;background:none;color:var(--text);text-align:left;cursor:pointer;font:inherit}
+.p-task+.p-task{border-top:1px solid var(--edge)}
+.p-task i{width:20px;height:20px;border-radius:50%;border:2px solid var(--brand);flex:none;transition:background .2s}
+.p-task.gold i{border-color:var(--gold)}
+.p-task.done i{background:var(--brand)}
+.p-task.gold.done i{background:var(--gold)}
+.p-task.done b{opacity:.45;text-decoration:line-through}
+.p-task span{min-width:0}
+.p-task b{display:block;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-task small{font-size:10.5px;color:var(--muted)}
+.p-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;padding:5px;border-radius:20px;background:rgba(3,26,50,.8);border:1px solid rgba(150,205,245,.14);font:700 9.5px var(--f-body);color:var(--muted);text-align:center}
+.p-tabs span{padding:9px 0;border-radius:15px}
+.p-tabs .on{color:var(--teal);background:rgba(3,139,187,.18)}
+.features{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}
+@media (max-width:560px){.features{grid-template-columns:1fr}}
+.feature{padding:20px;display:grid;gap:6px}
+.feature b{font:700 17px var(--f-display)}
+.feature p{color:var(--muted);font-size:14.5px}
+
+/* caja */
+.paper{margin:56px 0 0;border-radius:26px;background:#F4F7F9;padding:clamp(14px,3vw,30px);box-shadow:0 0 0 1px rgba(255,255,255,.6),0 60px 100px -50px rgba(0,0,0,.95),0 0 100px -40px rgba(3,139,187,.5)}
+.paper img{display:block;width:100%;height:auto;border-radius:10px}
+.paper figcaption{color:#3A4B5A;font-size:13px;margin-top:12px}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:40px}
+.facts div{border-top:1px solid var(--edge);padding-top:16px;min-width:0}
+.facts b{display:block;font:800 clamp(26px,3.4vw,40px) var(--f-display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.facts span{color:var(--muted);font-size:14px}
+@media (max-width:720px){.facts{grid-template-columns:1fr 1fr}}
+
+/* historia */
+.timeline{position:relative;margin-top:64px;display:grid}
+.timeline::before{content:"";position:absolute;left:118px;top:8px;bottom:8px;width:1px;background:linear-gradient(var(--teal),var(--hair) 70%,var(--gold))}
+.ev{display:grid;grid-template-columns:100px 1fr;gap:38px;padding-block:22px;position:relative}
+.ev::before{content:"";position:absolute;left:113px;top:30px;width:11px;height:11px;border-radius:50%;background:var(--night);border:2px solid var(--teal)}
+.ev.end::before{background:var(--gold);border-color:var(--gold);box-shadow:0 0 16px var(--gold)}
+.ev time{font:600 14px var(--f-body);color:var(--muted);text-align:right;padding-top:5px;font-variant-numeric:tabular-nums}
+.ev h3{font-size:21px;margin-bottom:6px}
+.ev.end h3{color:var(--gold)}
+.ev p{color:var(--muted);font-size:15.5px;max-width:62ch}
+@media (max-width:560px){.timeline::before{left:7px}.ev{grid-template-columns:1fr;gap:6px;padding-left:30px}.ev::before{left:2px}.ev time{text-align:left}}
+.decisions{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:64px}
+@media (max-width:760px){.decisions{grid-template-columns:1fr}}
+.decision{padding:24px;display:grid;gap:10px}
+.decision h3{font-size:19px}
+.decision .from{color:var(--muted);font-size:14.5px;text-decoration:line-through;text-decoration-color:rgba(147,170,194,.5)}
+.decision .to{font-size:15.5px}
+.decision .to::before{content:"→ ";color:var(--teal);font-weight:800}
+
+/* marca */
+.brandrow{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(24px,5vw,64px);align-items:center;margin-top:56px}
+.brandrow>*{min-width:0}
+@media (max-width:860px){.brandrow{grid-template-columns:1fr}}
+.logo-big{display:flex;align-items:center;gap:22px;padding:clamp(28px,5vw,48px);border-radius:28px;background:radial-gradient(80% 120% at 0% 0%,rgba(3,139,187,.25),transparent 60%),var(--night);border:1px solid var(--edge)}
+.logo-big svg{width:clamp(70px,12vw,110px);height:clamp(70px,12vw,110px);flex:none;fill:var(--brand);filter:drop-shadow(0 0 18px rgba(3,139,187,.6))}
+.logo-big b{display:block;font:800 clamp(34px,5.5vw,54px)/1 var(--f-display);letter-spacing:.08em}
+.logo-big span{display:block;margin-top:8px;font:700 clamp(12px,1.6vw,15px) var(--f-display);letter-spacing:.7em;color:var(--gold)}
+.swatches{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+@media (max-width:560px){.swatches{grid-template-columns:repeat(2,1fr)}}
+.swatches div{min-width:0;display:grid;gap:4px}
+.swatches i{display:block;aspect-ratio:1/1.3;border-radius:16px;background:var(--c);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 20px 40px -24px #000}
+.swatches b{font:700 14px var(--f-display);margin-top:6px}
+.swatches span{font:500 12px var(--f-mono);color:var(--muted)}
+
+footer{padding-block:56px 80px;border-top:1px solid var(--edge);color:var(--muted);font-size:13px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:14px 32px;justify-content:space-between;align-items:center}
+footer .brand{font-size:13px}
+@media (prefers-reduced-motion:reduce){.hero-mark,.device,.device::after{animation:none}.tile:hover{transform:none}}
+</style>
+</head>
+<body>
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ojos" viewBox="0 0 64 64"><rect x="2" y="18.5" width="27" height="27" rx="8"/><rect x="35" y="18.5" width="27" height="27" rx="8"/></symbol></svg>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+<nav class="nav" aria-label="Secciones">
+  <div class="wrap">
+    <a class="brand" href="#inicio"><svg class="mark" aria-hidden="true"><use href="#ojos"/></svg>CRONIX</a>
+    <ul>
+      <li><a class="l" href="#problema">Por qué</a></li>
+      <li><a class="l" href="#animo">Ánimo</a></li>
+      <li><a class="l" href="#caras">Caras</a></li>
+      <li><a class="l" href="#producto">Producto</a></li>
+      <li><a class="l" href="#buddies">Buddies</a></li>
+      <li><a class="l" href="#app">App</a></li>
+      <li><a class="l" href="#caja">Diseño</a></li>
+      <li><a class="l" href="#historia">Historia</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="inicio">
+  <div class="wrap">
+    <svg class="hero-mark" aria-hidden="true"><use href="#ojos"/></svg>
+    <h1>Cronix Sync.</h1>
+    <p class="lead">El compañero de escritorio que <b>se pone de mal humor</b> si te atrasas.</p>
+    <span class="done-pill">Proyecto terminado · 2026</span>
+
+    <div class="device" role="img" aria-label="Cronix Sync: caja con pantalla, cuatro botones, rejilla del buzzer y LED">
+      <div class="logo">CRONIX SYNC</div>
+      <div class="screen"><canvas id="caraHero" width="128" height="64" aria-hidden="true"></canvas></div>
+      <div class="grille" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+      <div class="keys">
+        <button type="button" data-k="up" aria-label="Botón arriba: acariciar">▲</button>
+        <button type="button" data-k="down" aria-label="Botón abajo: cambiar estilo de ojos">▼</button>
+        <button type="button" data-k="ok" aria-label="Botón OK: cambiar esquinas de los ojos">OK</button>
+        <button type="button" data-k="back" aria-label="Botón atrás: volver a normal">◀</button>
+        <span class="led" id="heroLed" aria-hidden="true"></span>
+      </div>
+    </div>
+
+    <div class="moods" role="group" aria-label="Cambiar el ánimo de la cara">
+      <button class="chip" type="button" data-mood="normal" aria-pressed="true">Normal</button>
+      <button class="chip" type="button" data-mood="feliz" aria-pressed="false">Feliz</button>
+      <button class="chip" type="button" data-mood="amor" aria-pressed="false">Amor</button>
+      <button class="chip" type="button" data-mood="sueno" aria-pressed="false">Sueño</button>
+      <button class="chip" type="button" data-mood="enojo" aria-pressed="false">Enojo</button>
+      <button class="chip" type="button" data-mood="alarma" aria-pressed="false">Alarma</button>
+    </div>
+    <p class="hint">Esta es la cara real del Cronix, dibujada con el mismo código que su pantalla de 128 × 64 píxeles. Prueba los botones.</p>
+  </div>
+</header>
+
+<section id="problema" class="band">
+  <div class="wrap split">
+    <div class="head">
+      <p class="eyebrow">Por qué existe</p>
+      <h2 class="big">Una alarma se apaga con un toque. Una mascota, no.</h2>
+      <p class="lead">La alarma del celular se silencia sin mirar y no pasa nada. Cronix vive en tu escritorio, siempre a la vista, y <b>se alegra o se entristece</b> según cumplas tus tareas.</p>
+    </div>
+    <div class="compare">
+      <div class="card"><h3>Un recordatorio del celular</h3><ul><li>Se silencia en un toque</li><li>Si se pasa la hora, no pasa nada</li><li>Una notificación más entre cien</li></ul></div>
+      <div class="card after"><h3>Con Cronix Sync</h3><ul><li>Un compañero siempre a la vista</li><li>Nota solo cuando se te pasa una tarea</li><li>Cumplir a tiempo lo pone feliz, y eso motiva</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section id="animo">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">El corazón del producto</p>
+      <h2 class="big">Un ánimo de 0 a 100.<br>Lo cuidas cumpliendo.</h2>
+      <p class="lead">El ánimo cambia la cara, el color del LED y los sonidos. Se guarda en el Cronix, así que sobrevive a un reinicio.</p>
+    </div>
+    <div class="scale">
+      <div class="card" style="--c:#2BC48A"><span class="dot"></span><b>Feliz</b><small>80 – 100 · LED verde</small></div>
+      <div class="card" style="--c:#0A8BC4"><span class="dot"></span><b>Bien</b><small>60 – 79 · LED azul</small></div>
+      <div class="card" style="--c:#FCCB6F"><span class="dot"></span><b>Más o menos</b><small>40 – 59 · LED ámbar</small></div>
+      <div class="card" style="--c:#E2501A"><span class="dot"></span><b>Triste</b><small>20 – 39 · LED naranja</small></div>
+      <div class="card" style="--c:#E5484D"><span class="dot"></span><b>Muy triste</b><small>0 – 19 · LED rojo</small></div>
+    </div>
+    <div class="rules">
+      <div class="card rule"><span class="n up">+10</span><p>Completas una tarea a tiempo. También suma a tu racha.</p></div>
+      <div class="card rule"><span class="n up">+5</span><p>Apagas la alarma en menos de 5 segundos.</p></div>
+      <div class="card rule"><span class="n up">+2</span><p>Lo acaricias con el botón de arriba.</p></div>
+      <div class="card rule"><span class="n down">−15</span><p>Se te pasa una tarea. La racha vuelve a cero.</p></div>
+      <div class="card rule"><span class="n down">−10</span><p>Dejas sonando la alarma más de 20 segundos.</p></div>
+      <div class="card rule"><span class="n down">−1</span><p>Cada 5 minutos sin tocarlo. Te extraña, pero nunca baja de 30 por esto.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="caras" class="band">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Caras</p>
+      <h2 class="big">Tres estilos de ojos. Una sola personalidad.</h2>
+      <p class="lead">Sin boca: toda la expresión vive en los ojos. Eliges el estilo desde la app y el Cronix cambia al instante.</p>
+    </div>
+    <div class="styles">
+      <div class="card style"><div class="screen"><canvas id="caraSuave" width="128" height="64" aria-hidden="true"></canvas></div><h3>Suave</h3><p>Ojos que se deslizan, parpadean y miran a su alrededor. El estilo de fábrica.</p></div>
+      <div class="card style"><div class="screen"><canvas id="caraRobot" width="128" height="64" aria-hidden="true"></canvas></div><h3>Robot</h3><p>Bloques firmes con cejas y cachetes en línea. Más serio, igual de expresivo.</p></div>
+      <div class="card style"><div class="screen"><canvas id="caraRetro" width="128" height="64" aria-hidden="true"></canvas></div><h3>Retro</h3><p>Cuadros dibujados a mano, píxel por píxel, como un videojuego clásico.</p></div>
+    </div>
+    <div class="moodline" id="moodline" aria-hidden="true"><span>Normal</span><span>Feliz</span><span>Amor</span><span>Sueño</span><span>Enojo</span></div>
+  </div>
+</section>
+
+<section id="producto">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Producto</p>
+      <h2 class="big">Pequeño por fuera.<br>Todo un sistema por dentro.</h2>
+    </div>
+    <div class="bento">
+      <div class="card tile s2"><span class="stat">4</span><h3>tareas a la vez</h3><p>Estudio, Descanso o Proyecto. Créalas con los botones o con nombre y hora exacta desde la app.</p></div>
+      <div class="card tile s2"><span class="stat">6</span><h3>gestos entre buddies</h3><p>Amor, sorpresa, alegría, mareo, sueño y enojo, cada uno con su propio dibujo.</p></div>
+      <div class="card tile s2"><span class="stat">5+</span><h3>racha con premio</h3><p>Cinco tareas seguidas a tiempo y le aparece una cresta en la cabeza.</p></div>
+      <div class="card tile s3">
+        <h3>Avisa antes de que se te pase</h3>
+        <p>Cada 10 minutos, si tienes algo pendiente, te muestra cuánto falta. Cuando suena, el botón de arriba pospone 5 minutos y cualquier otro la apaga.</p>
+        <p>Qué tan rápido respondes decide si su ánimo sube o baja.</p>
+      </div>
+      <div class="card tile s3">
+        <h3>Especificaciones</h3>
+        <table class="specs">
+          <tr><td>Procesador</td><td>ESP32 con Bluetooth LE</td></tr>
+          <tr><td>Pantalla</td><td>OLED 128 × 64</td></tr>
+          <tr><td>Controles</td><td>4 botones</td></tr>
+          <tr><td>Sonido y luz</td><td>Buzzer con tonos y LED RGB</td></tr>
+          <tr><td>Caja</td><td>7,72 × 5,22 × 3,51 cm, sin tornillos</td></tr>
+          <tr><td>App</td><td>Android</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="buddies" class="band">
+  <div class="wrap center">
+    <div class="head">
+      <p class="eyebrow">Buddies</p>
+      <h2 class="big">Cuando dos Cronix se encuentran, se saludan.</h2>
+      <p class="lead">Se detectan por Bluetooth, sin internet y sin el celular. Cada encuentro son tres rondas de gestos, y el que responde nunca repite el gesto que recibió.</p>
+    </div>
+    <div class="duo" aria-live="polite">
+      <div class="unit"><div class="screen"><canvas id="caraA" width="128" height="64" aria-hidden="true"></canvas></div><span class="tag">Un Cronix</span></div>
+      <div class="wire"><div class="pulse" id="pulse"></div><div class="msg" id="wireMsg"></div></div>
+      <div class="unit"><div class="screen"><canvas id="caraB" width="128" height="64" aria-hidden="true"></canvas></div><span class="tag">Otro Cronix</span></div>
+    </div>
+    <div class="gestos" id="gestos"><span data-g="0">Amor</span><span data-g="3">Sorpresa</span><span data-g="5">Alegría</span><span data-g="4">Mareo</span><span data-g="1">Sueño</span><span data-g="2">Enojo</span></div>
+  </div>
+</section>
+
+<section id="app">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">La app</p>
+      <h2 class="big">Tu Cronix, en tu bolsillo.</h2>
+    </div>
+    <div class="appwrap">
+      <div class="phone" aria-label="Maqueta de la app Cronix Sync">
+        <div class="in">
+          <div class="p-top"><b>Cronix</b><span class="p-conn">Conectado</span></div>
+          <div class="mini"><div class="screen"><canvas id="caraApp" width="128" height="64" aria-hidden="true"></canvas></div></div>
+          <div class="p-stats">
+            <div class="p-card"><svg viewBox="0 0 80 80" class="p-ring" aria-hidden="true"><circle cx="40" cy="40" r="34"/><circle cx="40" cy="40" r="34" class="f"/></svg><span class="p-num">84</span><div><small>Ánimo</small><b>Feliz</b></div></div>
+            <div class="p-card gold"><div><small>Racha</small><b>5</b></div></div>
+          </div>
+          <button type="button" class="p-pet" id="appPet">♥ Acariciar</button>
+          <div class="p-list">
+            <button type="button" class="p-task"><i></i><span><b>Ensayo de historia</b><small>Estudio · Hoy 18:30</small></span></button>
+            <button type="button" class="p-task gold"><i></i><span><b>Proyecto de física</b><small>Proyecto · Mañana 09:00</small></span></button>
+          </div>
+          <div class="p-tabs" aria-hidden="true"><span class="on">Inicio</span><span>Tareas</span><span>Progreso</span><span>Ajustes</span></div>
+        </div>
+      </div>
+      <div>
+        <p class="lead">La app hace lo que los botones no pueden: tareas con nombre, día y hora exactos. Y muestra la cara de tu Cronix en vivo, idéntica a su pantalla.</p>
+        <div class="features">
+          <div class="card feature"><b>Inicio</b><p>El ánimo en un anillo, tu racha y la próxima tarea.</p></div>
+          <div class="card feature"><b>Tareas</b><p>Agrega y marca tareas, como en una lista de pendientes.</p></div>
+          <div class="card feature"><b>Progreso</b><p>Tu mejor racha, cuántas cumpliste a tiempo y tu semana.</p></div>
+          <div class="card feature"><b>Avisos</b><p>10 minutos antes de cada tarea y cuando el Cronix suena.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="caja" class="band">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Diseño</p>
+      <h2 class="big">Sin un solo tornillo.</h2>
+      <p class="lead">La caja se diseñó por código y se imprime en 3D. La tapa cierra a presión, con una décima de milímetro de holgura.</p>
+    </div>
+    <figure class="paper">
+      <img src="data:image/webp;base64,UklGRjZgAABXRUJQVlA4ICpgAADwvgGdASpMBJMCPj0ejESiIaMROR0AMAPEs7d8DM0Dpk+M1wNK3/m5FqgGmv07XSzgDpm+XqBJfte5fkXzV+h/uv7j+1xyP3B+xNKy2exp5G3mP6n/vf8J+Vvzc/y3/G9iH9P/zP+5/P/6Av1U/5v+E/0PwV/3P7S+4/+z/778iPgF/NP7h/0P7l+//yu/6z/e/6H99Pkn/Tv8f/5f9F/pfkA/kn9n/8PtNf8j2Gv8N/0P/d7gn8x/vf/k9nf/mftf8GX9Z/3X7V/9H5Dv5//g//t/o/9////kA/8HqAf9z1APVv6kf1j8ffAv+ofkJ/e/TX8T+V/pn4//2j/1/7n5A81fWD/ZflB7kfxr6s/Vv7D/jP9P/c/3O+P/7l/hP2q/zP7ie0PxM/nP7p7Av41/Hf67/Xv8V/q/75+3Pul/XDvPtd/3P+n9QX1E+b/5b+3/6b/n/4P91fZY/dvyk/fj5H/Rf7J/rP8X+QX2A/yD+if4j+9/un/if/5/4PuP/leC1+M/3n7EfAF/Of7T/xv71/qv2Z+lv+e/6H+a/137Le4z9A/x3/O/yv+o/aX7C/5n/Vv9j/gf9B/3v8x////P5QPSUGil7lqxbFwjumMNWgQ26LSCWLYSUJx8c4TijJxgW5hs08E2a2lZKKcfHOE4o0WkEsWwkoS8VDokoJ3IeE4o0WkEsWwkoTj426yk4wJKE4+OcJxRotIJYtg3Vgzh0Nx1bnFGi0gli2ElCcfHMm/CC6UJx8c4TijRaQSxbCSX4ucOiQMVWKNFpBLFsJKE4+OcJAqTE4Tj45wnFGi0gli2ElCXiodElBOz6zySCWLYSUJx8c4TiJJxixuOWE21Z5JBLFsJKE4+OcJxEvDnCcRJOWwkoTgoNxO1MCdIRj9kLtqglCcfBuh9JOe0dGXcqMNvA4NpBLFsJKE4+OcJxRofQCcUaHxM/04+OYxhHj5KFWiq+GvvMBRtIJYsbs78qGtm6V32aUdgMDbFwnFGi0gli2ElCcd0BElCcKifySCWLE1L13TE7CEZCMf0j434OOPjnCQKkxOE4+OcJxRotIJYthJQl4qHRJQTs+s8kglQOkPsbyyKt227arsNGq+nHxzJvwgulCcfHOE4o0WkEsWwkl+LnDokDFVijRaPwCX01D+mn5TVtq21YUmjXyBRRzhOIknHRLYti4TijRaQSxbCShOFZbCShLvYtnkkEsWwkoTj45wnESTjooP4M4dElCcfHOE4o0WiNWKNFoY6LaqHY0HTkDXAi6U9KelPSnpT0p6U9KelPSnpT0KoTWD7VY8EBPEj9YYdtPwOzqXkEuE4o0WkEsWwkoTj428/04+NihUz0CkTpCMhGQjIRkIyEZCMhGQjIRkIyAVcC2g40TcOlcl3pMIhOgmv4dElCcfHOE4o0WkEsObZJBLFsJKE4+OcJxRotIJYthJQnHxzhOKNFpBLFsJKE4+DlpKE4+OcJxRotIJYthJQnHxzhOKNFpBLFsJKE4+OcJxRofQCcUaG0IEBq42+L59DZEAtj41ghDBzeYIKONh5mEgsQvL330nLYFONSydkpHZsWxcJxRotIJYthJQnHffC+H8MDU93qjZ9YVIZIuayG3KbXYOJ329VbBWIA0ZDUAcqCwwRFMIGZ0/4ZctZfaHwFQLr5eK0VNS4SumjRYB2J7ILroh5UsKUVb+7tmnHoCJKE4MggncAvyApWndbkJubExLzHmjAw6njAzJ5UDDpwy8GsFfvomtgli2ElCcfHOE4o0WkEsKssnE5Ls9Cld0F0AexWOA06kJQl+sHWOumpGwVZ8GiJ4HsoB1nBgHYK62sbZGCzIADzkhxevxyoAoDmVXBjNeqO0/zpUw3wm24Ha39oBOHwtJ7bsIUUi94AAeMj/R5lvZzFU+HvD7EbiNxG4jcRuI3EbiNxG4ja9dXgkFIoXK1xUOiShOA2nndzymrnwD5uI3EZyNxGad+UN8qwvwUEkvxc4WpEXNJpqiTFEFsyvIQ1aCNxG4jcRuI3EbiNxG4jcRuI3EP6kJ15A64/oegkkeSQSxYWZBGeyDsOVIbU1battW2ra45wypIJYc2yR+i+7ScthJQnHxzhOKNFpBLDNmjpZK5bFwnESXCEsWwkoJ2fWeSI1Yoyqw7M3hzhOKMtgMH+XOHRJQnHwbokgli2DcdW5xRotH5yaqOb+JE47qR1x1bnEExCmVvRHKK5pudbtoikQBkgdgThxKdSrpFcFkVc8dNUcI6MC6UJVeKlu8+eSHMLrocPRhm58TtWhOHPLuBaShOPg3RJBLFsJJfFVijQ+gE4ic7Hy1UcwAJWcc2EUrvd/z7AU47wXIm5a1uqT+hSpJvJWX9z9N+Dnxr/xVosfPbTmLoAG9Bj0Qkj4Fss3FLsq0EHr/Ny8Mk/FNJfUGi0glSSvDnCcUaHxM/047oCJJgCygylbFf0XPsKqLyX8u5tq21SVGnKAzes3+i1h/INH51amQXAsg2UZoapmO+EBucJ19ybFs8kglSSvDnCcUaHxM/047oCJJgCC6ysGblSizI+Ob98ujXXMtAbgFGhiQLsUm5V+PjXOUJBmennK2ueTVRzhOIknLYSUJx8G6JIJYc1ilgSKTRdosEgwHggYFj44M2AI6Jq2koJ+HDokDFh9fb+ZFnryHRurU4e/NQPoQUIEyq4vyB4qowQis3JpO7rRPJSYNx1bnFGiw2eaE4+OcJAqVDokDgKs+Yx9NtGXrnPH3nbE6WUwBFu7Np7A+ScP6Ytg3VgzhzLtX7tc+ad4wdu9KAf5I3Soy618B/nMBVoQ+V62gNL78XOHRJL4qsUaLQ0vfarVckbauaZRFOm7YZu0sl6roMqe1Tv1HrB+j8egFXd4bVFKGlPBE/kj6fl9ZUcoM4cs/TBvYmWOS0kC6p6epE21hmnrrvm+yoL5skglixu0AnFGh2bePMWdOPkwPVxUwN5VIEnIufVY8bY2Yo8kDGUHNXe6hITvbYyGy/AUJwa1CBm4tGoqEJoks26Nrj+2koHZ92bhRlRtq21bXtPLB9tt/rd+8hbsJZ5unm7M3hzhOKGVgESUJx8bdGz0vMz4HuaF5cmZaggvv66Zg1NDLXa3lE7JDsRgJMfG2ABiiK2gQp0ABitcwzAPCe8fS0yCgV/11bKMXM9of50SQSxbCShOPjnCcUaLDZ5oTj45k34ucOiShLu6cLuWBFgWk8R67atBVnz31+2lHRE9/GonOGj84PWvuZcIKxbYtxzQfJdaQETFyyXTjWutJiP2AMn5ulFpEK3ds8FSsyX/i5vEHgZA24fop7glID51MuJUbKQPpOcUaLR+cmqjnCcRJOWwkoTj4Nj0AVOPHHaRiFwEKLtAIbXaFYEWC5HsjddMo4qdZmH7c2KBmp4vfscuI3yCrhE8JT0TJOTVgUjdC7IqliaLKDQ3txlDJOYyS53sozNmIH3jdqx9WIKcgQzcOVwuQa3vhmg5yjEAYvZuQjOwRWXpmG/LbNoLNFpZHVzVxRotEXyROPjm/f+LnDoj5jb7xdnWT1P3ldy1L5kHpusPoIaldBQ3Hg/ktC2TEKUTN77x2duJa1BiUzQWD//1RR3YLuMGj9lhOpbv/+rnqDURS4OpmlbIAZMyFc7nT7qHYKHuOi/SBGGT+FSfP+ti4o0Wj85NVHOE4iScthJQpyJtm6EYASOze0Y1N/Eg8kSwqbZ04MkUj2Jbcg/6L/kSHCpE2Cvi+2bOLCFEq7W/O2K2lK0kk4baBKrXRJMR4Uo9GIeepgHT9Df7k6O9iBKyk+jzyw+w0OIEPkhaEjwhVSv39MwocCOI9+AHsbFzz3GoWLhOKMp/bSUJx8G6JIJYskyGuO/SRAypD2lcdrcR9kpnN75iaE4DH/1GWGs0oG4wC57GIkHupRIApyP70FAYL7tJy2DP4GkTQud0xsN0hB3bQXYxEN5s06xmol2TBsZ/olrce3W1lZ4KJpxpNIJYthIGKrFGi0fnJqo5wnFGU/tpKBc72wASpk8e7FO1fC0ZEEsnpbqcEzfGUcMoSQrwsoUVoq9wwTSz1+C/BciuQU4GjTN32C3FN0bXSZawAI6XMsKB6XTVtq21baqCFa51dosxpYeS4Jx8c3z3rUQjjUFhI7mVzFVoq0VaKtAJxy4lYM3MK/ViHayKmR0RDzhnIMn1+BFHKhTdglTZfbPSy4fJ9xZOLYJAiWXD3+J7PhQ0UzjSv2YqtFWirRVoqekOh7DKe1nKO4AUQ90DVtn6IIDQC64XqvPhxSBWMPCTyTCT7wgZ8z7n+DcL3TgvkE+IEfHOE3VwgPi8HiMSFI+R7bVtq21batruihHRmu1CSUC2ILs3yITV0amZSOCxcTcXyV7YzuUP94tJ5JRaQSxbCTLhu1Z5JBLM4sfuUP94tJlnAsyjtbaI8ntmD4mvMREnZKLSCU1cst2hotIJYthJQnHxzhOIAhjeE4wJKE4+yeUtGhti2LhOIEya5PCEUY7g5Rzs2/TKdDvwgJxRoY10QDY20VG4JrrY/Bs2S11sfg2QBMZC5a5/VwzdUn7X6pO2hVdadp684wUhO09ecWS43cdNvABNXzjHWLYSTIIvR/4FUt76UV0JIQuQKGzHEsm/Mh1XUnPzjBSELwpTNuVFYSHN8bIhnVI62WS3lti4TijRaQSxbCPbAuT3pB4T//AsnRLXORitQYtsRSarVoJKE4+OcIq5R7rqQu3WDVu2yMgEeOhJzh0N1YM4dElCcfHOE4o1GYM4dElCcfHOE4o0WkEsWwkoTj45vgAAD+/+2JT2giPxD8HxcvpINjqfn0RWvP/OxNX/wAjWmt/uzsf9ubAnm75wDBTalzHQVZpryo+eGbGOTCZFGEb6mjyAy0c+S5K8P/2EhqyclsqNx/ApFT/51tpNziw906XjAAd1Qn+SAOMrpeN+sARXwLh+e8BysHoHEoBJ3EoDTZkcha8NRV9V+skOMWj0dHVZpSqjymySVPOA7GMX79jkVNY4c+Fl1+iAFlsoH391Hm2o/d9l/8V17q3AopLRKp4TNjvNYfPPUOJXDzCN9D/GjRL/PdjRIKvpezZBbrnHVo3tIbeuvxqnh2/FcX1VJYuDGgQD7A6Bdz7YCGfOJoD34tSo972mSI6G4kKGFPnAZKHXyToYYnXK6qCmlfUI8ZR6GFxhy/BrunPI3uS2tSmp2pV1jokVMxc4asIrbLkpGr0BzEEOQBoYaOIginVsBWwF58oHF+e1QaJ7qphaxl8x7IwJ+nl3kYpwZ8wBb0eikX0aoXLdFlb+C0bjXTSmYTVeOxuXAkeWnIKPewCj3CMh/iNzc64RQnLzsBHLgjjUG/9GWqRkIO0EYJz9hsch9HTupuAWaS7N07/4UBGUpGiBnhajeyD9fvbVzrcyXrhJfD+YcS6bYkqRhJDAlPIk6f7jihE+JAEnLyowcm/vOwZ6cVGGH5Q4TUwiauqe+wUu2Do8UI2LzyYRs0YLgyv1dNlznkTk/6eaRV/I8tIgAYPH0JijBYAgbT+kpXVNKxrUpRzyHsbkEssJmOZIRjBIksRmmy3ZGyVmuQrigNMbt6OQix0ypK6qyzMH+Iqnk4gkXt43zgoug50RD3WLiJEH6a2nu7+NohfdqtEjEoUqssAAdmNg/gb+EZNACE0MMNt0071ycKAO5EAZf8bz4wid4sXXXtoXHmcoR+PLRO/mqEG0HCB05G5HC9yGgyCwQayQ8bZGDtebr/5KIboXygXGQa8KhmqZuHHoDEkAYbkiJoqzSIeeVS669Lrr1zsDPUJUgiN2Ax6JLDBtU8h8oLGTGrKVpj1KUoTVDpNqdN2KbboIunWEK2JLhv739oHO1yQzEVvtA1liASCQbxM5+ACNUw+qdx86rr8h/+U6GRforYpZiJDZCPuax606Gf1efKfIyJqKUsLB3QWxOM87xBjM14T0RwC/2I2cB3I811ib7L2eQJc4AEp9Xl0S/saVb6cfZ2Kks4aYCp+ELFisoANNbK8vciFAKJVIxMq5gqLNG/OO3MYHfyQdkr44w/iC1B3eIbXp7FogwVBZqhpck9NMeSnkg/3BsusIOy20ZNQfnM9HZ0ewAl11cAENKxdTQ2EYrjnHycDVO9q4/KDH4EpdPTb1I2PpCetrnnK6W9PD6qjSIWLU8g4phbJJv6BART6v/hil6aflx+ACQudZVBmvVc9m/TFwBIVDd/jHBuI71a9REemf9PiOTPwUGAEeX9sptIBFsliE1rJ4BZgoAWdem9nFJX0ra/ib+SVCHixCx4F9zXsKR730Raws+T8xLL/jBSwxf55OHIAAKjKN4eSgG998n/M28TX2NY5GCA372Rlt8p6J+oug/3nKylDP0plYx8Mjy8fs+9a2zhbuW1U147hDi0eIOREz1DaBI12VfyvrVh0Ls2d3u86TxP0YPYJ0gtFjK2NGEwUEroKxTpi2vy3LBUfZCSb7BTJ1JAJQB481p83vvTJUxDXp/dNKsRaepAAAAAAAAAAt491dEH+iJ5PAh0vBVCaFbXsuSPowdHcINc7fPr1WNqEXaGaRZ8v+1ODmVn1IjrtSBVs+SgB74vR7G2+JR1zxzEV7B28QzoFOckT29aytxs1tFyPYgb99O03dSLKJItd2vDNXaXcWKvpaTPqVKV2GR/Of+veWz0TCb+Y58AAlYGa3q2oceqS3roGU1fWsiH0ki+t6KOayFzaLfbQpg4x3wR3J8vOaQcAys/QR7SnH0KV2DT3woge7DdYtEzXxLyT5R1DXSAQgDVp1tE7QoPxbMyddnPSI8JHlPXPt3ZTZ23SKP5LL97gNl7kFPPO7X4OLRvAsvFw3XbaG8mSE+7OhmFwmauAliY4KejFB2A9Uu7yu1amGnSt/dDH+HlELEdjtsh4aXCoY38pwKAXBYu7RzwIxGe8BXRtPOgfx5LET6siv4ASjRFTSqe6/yl87xPfQUnxzZasH3hFndaePAXxK/vyssvsLUc38oVV83S15Gb2rP9TGhj9Foc+pVDRdtf0twlyo5V4i8SKrmsMrjw2Bz4RjqC2WmtVSjy1NHacfx7nJTO+M380dKI+8zWIhsJZdSHXpJlHxo53FaX/uvrwsdyiABh3R6Jgb7SbmDkwnXI8awj/4/y4X99+QGRKMiSX4kLmDhHI8ovyOt8rUztuWtffk8c+wZ2rGNxfJcfuOPoDxrSUSq6L78ULixrUNpuoAZqViTPqGbI86bt+7fah4rQbZ9dh6hF28oQuzamPxfxFlXXZIDtfn9bFuDz7p3zKR3Vbe6aAwiQWk3/DXmd5IC3+ZdQkpSYTNvjxIuw3ioqC15sKz8GghwASA2IznIr9HTpdz75ktBc82K+I4dd1vFV1KArCxeEYA9ShpQ0jXBonB7x6oC9F7Va4BzeTKCKdoe0/VFeSuhQKMnb5P1clVdm3jEN2aYbBprU8Odn72dGcJ1cuM+3cw1+fc2NeBS92DSzrOp4khIDLfNsA2BRXu8yDjYMks4IRDr4mqA7u0q6ZiQwDWLSym9Q3pnKM7rA1Y6pUHmchrbaAa2W85GltKa6Owufm66mvPR3XbieikZaabe4iQF1ZYbbybtTg+k1UdNRS1+zulNpfXFWM/EAzi13Di+vF1Mc/CBhXVfQo5uYX75FGUCAi3v4itj/EdV+YzIi1226GKYNYMGzZByXoBNUNcWgejCCw5VBYNHCHkfMD0Fu8X/lMloLSoLnJzfy21inQ7/z7RJGgX+oWUots8gSjp5TucG2PKcDnCnVr++S0cVE/sH08UUWIhhyhQ56C+oAcC7s0jymI+Hn57OjpA/WGrHoCle4EQgJhwyqy1T67tNTFvo6F4hy+AWUaZ32bepWV4Fg4p2mIdnRFFIVODmxejWzTtWQmzdp3Mt2P6fg4l50KqZgGkMDUJJPaA15s8xBOhUGYA7uoEobmaqTPVFIV4h4EUjV3ZpYuJcpjOsXZs8G4sD+JUwX+QfA98rX21sNb+Y9rj2VYuAMmBz+FPl+oHx+/uKb1AJcZoiVnA5kiGnBr4PcbqSOLGadN++vk2BcyV6SlhvPBZQ/T7VmDZUeoVUf5cAVdkVvtEV9Yke57TTpCZlTMFOrmirhsPV2w94votCF+ww/60kfAEch82QsbU636/z+5qTRYd4ioTqiYyfl/ceKX5ofvaVBhpof29xu8a1OzB9f+bC+yvdqr33SUGck+RcBqqf7M17DD51d+Hih9Huzph5S87878L9s659bwV0L7U70Ato3V+Lv6Hs8UWGMtxu29zwb1M7xje3CICrwW3g+SayngsDew6ku904MIOJCRiP2h1Q+ybex4pws8OTU/TcDUX0NetAaOnPPaqT5lmtN9QN2T6aJiSbiW6GRkewbAJXit5570T17hCITOH6jLAde7hH/NtZjRcpY4waAijUR6VF4NNU37kftuCwLLywsCqwQkCOlTybdvllSbJ+gSZHcpVBV/UjqWWnwB1oKDMW5Wc6IOnuNpeiP6XRHaWoTntcjv1+vyINucIVey/Yff4gcheP1EVQQrvFLDJDEA6w/QHcPHJS5grawXKe+wa7gZjO/OOAhXqcKVXfknBoOAoK66+nyEVYHnA2dY7TQV8HHLU7og8VXpGWW/aMfubh3VQITU8J/WWEhz86Klb70IDqhQuuQR2+JByygY05ZdartWSPi0JsW8Y8YQLK7fVztDDLgWgLYHB3Wf5CbCJzTzRKgsQxN39TWK6OTaTtkBO+8DMCB3xEjyUancsFu4Kv+eeBeUDg1xm+w7vidw8S4JprcTIAxrTxgpMF08fSBC3g2U/BQfiCmy9NbQK2r3GlP70cECIA0FIaUitpnnLszm0vfy1LJl3/txG0IMgDwBoD4NRCdxB0xnhzRhvZXR1CxKsYWf1Z1bJte1cQUYosVPEgnn3K8DSJOaC2Dn6Tcvfx8bv1h/8j8Akvc78GC9y8ctnFIpRKp6++cjRFaUDRqZ2WxRoJmBYQd8pe7VnT9BPpthiHhNn3LBUQ/B3w4qKF/smMDaT7G2UIzo7mLDf5WfqAV+qB04yo/etp/aA5b3X7VnjxZuQvm6a484qy9ahVio9MJ/9lByFOxRFiCaJGfUobzUZpxukwugdT7+Tnry13T3Q1kqIx0xv8heuCOIX4MAVqBLW9BotOgbmTocmiPMumzK/KFLuj2ian2wgt8LleiXbmwAqm3sSFnV7n3NINFd0RzmNqtWhYQne3lkDNV96+CJfPSgoZP/qCJgL/K6uFTWk0GoAP9/lsuAGvpWrWe2QdHgFDlo5JSYU6XVnf3Kog7baPaYZZDcOwk8MQy7Gw7+KvCgQE15DJarP4oV+sNoO7Vq6z/Z2tNW3AE7auwlzELXZWGIqOyN4CnuGNJcFoBSiPkHsG8TkBiag96RK+NNEWMAhbTKGAT/TXdeQToN0ymCRuhvNOu45CVrcSI9+EGUdN7dddywHa4DAUJYQj2xFX4OB/Lx4hEvQ4iBAC73qB8Q+qpzovf2dvVlIStdZW9UjpduMu+Qpb+o++RYDG6xvfm19noQSk2oRmyVvlIWppEfvKtq0AjWHxqSH5CAhB4eSuqNEkxibIIhTYU3JRf3AGzrY8Q9acpXXmkK6EZXOtuVjIjy1NnqsOiHoHHT/kZ92JDuE7ZJkLXVrQnhumfixyM6QqNfYz8Y6Y918BlKqmJHpOETYAM0+O7WFqZhJn0aaRe6TZY/XuRjZGeBubFfjkPEURCDC5hD3xRdg8asvxwumyWxrFtp4YIRDzLlnJS0MquxCtNDexAx9ixxKrmqF3cYM5CniJI3takWFdJ3hH4V68lYJMxyWcooNLyas7I/DauqdTmYeFLb+X55viW7XcsepdRyBVWkegEJf5bP50/JydytCo0PlEDMMSBjxoA/eatQiMbvTGfnVqPAbAlc8Naah6+jsKkPoN9yiNOS/QY1nTp1E6YU4FgMjld0x7yb6+kTtialCcww4lqW6z+PPn775N09xtXRGqxy8/P7heLvSbSsKyYG8XGRTf44C2CPn1cJJFfIGH7RUdEbrnqx9kjpRJ+m2zWxZNxHoHJn0T/p30nptMO0EuxdjcXkVDvBF72R4D4NwtQYcV1p/8Z63pGz+8jAjIn9OVRH5O2sbck/pQSbTRhINa5W1UfD3f/h1X3PfNL4b4GEEdi1V9otpTyLgQI2tWV4K/2VTprVs1vKi1I7m9+oyKhtvWzLDVVysgKO6n8PUDjeUmqf1Unpk4uSJuzhhu2auyOAjzQUGRvojk7EFAITk/ECeY6wnLTVyPkFYnuF9iWTfs2MTKhNNI4sbBSZ85pLC2+wRRmJ9b8AY0Af3+UUn+LNJp0LggEC5159giA22VA1Wt+kXBktu3xnZWM3WnKY/lBYWSGBEaQZAkgfkKiCrO8GJ6L/1/VfK4wOBl0H73XkYZSg+mIpRuGRpFv2e0aBgi+8mG5LjNTxKt10VnLRaH7T1lqw8l8vyuzIG4Al423/z0cEsOzor3aJ1hJVovtUmunjb2gSIshPwZL+pCNiaOKg5+zjk6ssEABIIyDP6iJvUnBkpjm0iTCwT/8dO8QC+9NBB1SJmCkyQivD0G9COxr7DMIvpsrhqp8gHG7LB69iL4gNMga3FjeEhtkoxWkwnNuPuGkKc7VJUA/YYZszERO4vclNWCHrIuWNLMm2DL96iHBU8OHyl61f38+tIOIK305uCCOuEmlmUCs86t9REYaOaUrF0oHl1BU832mi3yH69zliUPHhVFQ42PbDcoaCq67bM8bZrPo55Gb4JBqG+sQ/gj42AjZLeOdLbu2Il/CgiXsM19ag9FlYLU0F9K92HP6oisCuBNZZD9IBY7RzOu1AylrqOtBNeNM9BwXLrzD3QEr6ksT/ieV6nrK9T1lep6yvU9ZXqesr1OhYZEATjExu4yck979JRO0D4obJCmkhoADIXCzoqweSbxrYJNa7bhFK5jRYMUFpk3oVRhbSAdBq6GXk3OYvUf2/7YlUHHnvkGqtokZdaGTxW2LC3NTmdw/GLzl4dRaBllpBUnlCM0C0PdiMRxymkK4X6fqh21uVV509ufbs3PiyBAf0xWbd0prWioEDQmT9oM9vErLKagxcJG1LQvbrXuTB/XNUKTqZBaaOFE8YXKQDQJ5cQjJjJYMNXpRopmAFetWiA6qz1efljHWGW3rtDFuewMYCUZEWtmQa8hTKXRwMfleaTJFAgMXLWaeEk/CNmlBw/xSBwIhIR+HLUJuPzH3Y0KKrhoBfC7SZCVjX9M1IF3Ww9I4M6sl2KaCuexLwBRM77D22OSKFZn1si8QLDXG5Q7bQJaLgTqcGFJfAv//////////////9gIwoTlpX3/g7e+wTYWyS4jeQB7GMKDsjt3nHDMcfK5S8CV0RskxSrn6nxjJIiesukbgqDaqk2qYK/AKOHCdxjK9ai9pENPRyLQW32nid9x89JHdRa4GMCwtVo/EpR5iXhnj8PmPhMMZubCtxUN1ZOtQ9IVtyzbLQKajklouTwInkTXVzETiM863imCeP82oF7Qzv/SB8h7Q3soGZ6al1JeWDmdp/iIriBMJqFpMd7OXNCdzEgAAAAkBtyAL5xNwAAc8GpPDREQLg6htNKqkmI/o14Y4PeQF/1nA7vA4/FXtvKdVl2cqTSOB+tj7gCB9HsMeRe+W21bqiyrQBl3TmsGffnk6VcIcIHCfLY3wWvCqkwxeQ2Ff24TPWnmvQ9Wwc1TgOhPGbQ0HQa6gbKsiEX0piyDnPnnkajAfua1sXxcU7OCo8fhOZKwQKVH0yTf/7WL9KEj5q6pdCovfHHOOq++JILU8xJY+iiIHfxu0JbAE1XmS38TDqdj9/zY3OI1t/J+3jkdhGXFpn8d2v0gV/8CsGHEmdCPMliYs2EeTgZmdQigVgt2+4gYVuWxMbxFTby2ZQ8qXyCnH3tnzShZpNvpj8qKIE3T+ndn9DZlcR+cIuIfjli1jNOU13jU+4UtZ3c6moFJXHB5Tq4axXQ0qNEVklvCDpfKtitpyS8RQQSSZHrniMgUVFoi8GSAN/ACwQsOu+JHkmcR6adNGTQgwyX5BAOttuJeNoZQMLPkjY6kdakicgE/YF+BgaRSDkQFDxpLOFTam4q6KziOfFJh5B+Qakw7amz7aCCTWh+tFOPr89T6dvOhpDZXpjgBOQQZOcUBCNvMqKYmqi+meQ+Kh7dyRGsPaucIYwrE9JbhvrDvPs35TFVo1QgC3tCguP8EM5+Gl0GBKpvtq7grbotbND98QMArVbKoM/pE0Smx2fV0MuZuJwaTYzlxF7CWqcvoaoZt7v3oZ08KTiNSdvsxfKpHGH6wBioWcPQ9zvK3RdtqHPhYmDjhmgPn+lzC+v15eE1RaqOm8mMefRsGJ11tR5NYVm1uVjord5z5W5P+8b6L9Iwr8oHpjC3Rc0JMSc/nm1gRhP5aJV2n/yN7lshcpQWoEJtYmoyXQf6XdMvXG++70e2ZlvQY3fiiHXMhVNYHZgX3Ox/3a6VY46ZJJ2rhaBKXddGKmmFGstosV47V1r2ySeMWjMlt9LHuTil3DcfMEVFkRl/gAa5bnZYSeyxyY8i7asaeVxrdJHC5TdSU7CaObzCGAGamWOSPdPzKiqEvPkTFn7qQ9+L7Yf9XmuweB27Mt6JNPY8W/d/m4e7B/fG5/QuAYxb7w9OIc1iszby+scuUhcekWQ5jsbcswRd4Ku06I3pGIWsomMKiEe0wCXiwFUw5oyFQ7znWWYvtpV1yPjGbgqhesGgSwWqcyl7fS3GH9GOWg6C2diTWInmwwuFypLYDuNKRJM1qe/Dal/wI+X0rl2uMcsJb1rz4lbNzRqXZm/ZzfiWSXX7exnTjPo5TQNPKstyOdlDrVs6qalnNtUVOiCym3ZLWmP7FM3B837SVCqi54tr8qvFeMSrnuqUbovn1M18J+lAp+HxBfNxCqZU6WGdklMN5JaAQSvXFslmNKk53wyAQjJj7HNQJPHW+6d9pHGLIIf2aEPPtphXBp7RJNliwCpQ8u9ZVWB4ChvHbToSBNjHwYB8YKuX68veW78p0d+AkxJGHZoQ9DAJMeH+JpFOQvLhUklmveMzM02ACJ8iYXszUNbVUgGzO8e/ThQGBtVS8Lz6+xfKavhnJO3zUkREZNEj4TE41e6lrXmnz2auOPkw2JyUaf0yKCwIYeWmykqMCJUv2Nb+VLdFEAJjFDQb3TXxh6UiHCWRFqZxJTqnx8zh8waYvknFnydSKKaB4oHfQwe9dg0iDCGj9hO0thvSzUrqGegPXtEUrEbHObsGnLLfKP7HY3ct7xfaXalTfO8gUi42XaYfQf+Rm1IRuQloV7dWt8oqoGevEWvgDsfDbLB9CQsnoYa9d1c6J3VUlVL3KLaJlA235/XWgd+BUONryYQkWxO32WjNfHwAW047pQ3N85BvDUytC/s+eDygxpBxifNEervgAPNqWsX4C6MLJPuqB2+i13xJd9rorwGXLR8s0Mv9zekrVfdJMZz+avwOS8FdgLiQ9fGczRigA3vi6lIXHd871ckgDR8WgpjRJmMqiTInZqCQ9y0R+/ohlOpbOCaBTWoYa+YbO8LEUJ7EOe0i1qdfN4u/5O0BFsUR+KPy9UjQ7ZOLjfnKKgbnsM6eXa19XjdlpFH6Dx/PUa0kuZy10yRPnO842LcbW05dX9lG/O1YCOOz+AmtFiVfddC3kdVJRw6oYvv3PpQ9srZVSzpBPBTMHPNjpk8PVNI0axdd0vfz2/WQSdeVlFGdyX9NjoNHyfTfict+ZPMt0EB4ut3OctwQIkdjlb19Lq7EfMgNRCAIcGUw0UiB5MiYZzaPxYH/AWyPZ/Ngp/txn+rG+2gZIg95NVWg3Il+wFTXk40cg5agD2+Gs+pPE/3mLx/mjlVsvVh3bJFPGLqqZ50O5/dr7EkcD09rpC6rAxefGWDgOmZgyorslq+x+wbFRwicJxnTzDDA37IAT2SyZa26y5nTAXDcDaAs9qHTM7zGO4Wv5gdtufE7rIg8fx+3mWSLWPp7aOztjw22u5IYRrRmZwuwvdtE5SH7Gyw7IvhAqhfELmH3bgKKb/O5oQxPM1XN/cfa9CgM5puUIL9sFysHBLFnIo6Gpz7OEvUSgzJg67Bx8O41CEK0YKwYwK2LDYuTZ9EwgOMjpjoCdOh8ovOp8l7PERpVwCBa/2P6FTTyhdV/YVfXrmoFFiWkkG8tb4uomkfLgkZgyMiK6L2Z/NXet5bAYXYOwB/T6dk0JrMZtoahAWAjg9q/5P0dhCV4UGhpwysHI3LfdG6h9PTYboBkByml7VtEnBo6BLnr/Aanqi6o5MaMLW/LZTnUYtAPW4LUxDZyZXuqf/2Pwh9f/m3lkMr2VqiQ1fT1OxoUQd5Vx2ayVpU2fly/oP/SjI58bwyTt0C/7uJ6BEVWvRh+tjJ3okbcKHxp4aFulKuSDxefnsSc7UKv3+dLntzgeQxn5Lrk4JX6mlSTZgVWac46XQvhbQCQUV3pFZihGuJBUxDhPOSlirxLhf7aNG6KYefD3QLKhUhW48KcMQVx+bzoQHZFvoodx/h2jUpNFohWJQG7jL6tZjDU7I7i6DGEjWQGj70u+jjbQoMgDR2xar7QsC3W/XW+kciJr4T6tWF7GOlfQCkP1EtbaPGACN31CnsAwUq7LT2wbigBW/AOzoIlMg1m4n8Nsj3KnU5boeuK9BJnF9+Kmr3MRF9h2H87RUPo5XwkjsiA3i5N3/7uiU8P6yJTw/qzGhS+T3Tf5AXvaiVyW0dD9swDrf1aM9TJbLUCGe2MwnJ9uJ0KIoLmLac9gCAynm8GjOmj+Wmm4UCmv1ZLZr56ZTp2YN1RqXnxqJ0XaBHmdy0cVVx6o/04IC+UJLm6/NA4TJu+7QgwD/NTz2jDAHCiri62c33QlGxsEgh+I3Q4dThQmyV1uJxGriGgyQAmPFKzSkBu3KFS+9NPbUh05vY036nOaIbGk3iWev1Ai5uCoFm0WLNVQxCpQCbuy2dun3qCR09ChxyHC1qbfDpKrkc5HMc1mCQVZ9ejnX7xbaeG42weLEH3Klrf1VFL4ZBtNfx47E0fXg4BQl5gBcb5W9/uNkb2AKVCmcioMkV1st2XF1sYL/5Om9ipZ8TOQTcd6sC7r4SX/4I5kBiBvakb2BlDyUw4WkZ+ddlNbUL0EzHDSps6sLW+bd0zGxMwWgsdhBT3xeh8qtIee5GGHEl2jB/GgNVPnxL+5rtx+3mBBglOSVYVO50nfXAYaK4zwasZGbxBx1//RqRKNO2uCgZBZNwO6mdbtVhCvY8l6wsCAZVVB44Fe2yiDK63QiDmGF7b+CL3/wKJBE5B/kg7zfQIQge4A+mSejOD6D0iLlKOs/HEvt3xgTpW3BUlh0X4lhw+ZGlnNG6ieNztkJj61Z3X4LrV6U3NccbD1rdIdUwudf+GuKHrMUVX6vhYgwiBTX1VugHBP3K1hFw7ztIE6BcaIpGP8HoZNVt/C08BUYFwRdVEdSrIVecbShhiBCObpfLB7fLSAVqvDz0gfEF0LzvZWU1yazHo5+iPqS4sqODTMd0Q7rhdkgtIdk9YYpEfesbknassvaK4aU6dLGw/ZaLSY5DVvkqQS7VZtZ8ynVJCyWrh6Ve29brZy7undMgPqDWrP1B7Fk8aQWqeBmCh0Sp0JwQSgeQ0j2zxWwL0hyRzyvyKvLk6ZQ/NVrTQ8/XTfQmQGB5prBToo92sg7iITZqRnSlji4RJF7FBW2+Ledm3s2/nehVPBdk0UbbYVmA7wkGN23z2N9Bki0Skr0nf0phO+sAIvYmEdYlTMEk8DKd8FaaqmndxpCEUw8ZptGff59HbQH0bh2HYYeJYAntAWFKGwz4joN6pfkOJ5iDzflLr3HFfNrfveH3rq3nCEuJ4DqSxjRMoeGFi7TmVGjEMauDHhffcpVoRh8zxKA4vYdz6+br3PQCxiMHdSqGnXckh6qbO0l+KMdT354KA74tHLIHP59IApfgXoCMJwzi2kmGeT4tVHVJP3YMfTxNZRvYhZHhq29PLQRniZjDnrfrbCsmbvngzvAeSUFOS/h1dzPHIFDXVnV+iJMY+YEOMtDbo+o0XDafWz+bpRS/bBPbm/12/U/WZeeIMOU8fv1EaJN2vqVhy69D/RGrgLTA4GA8FuV5g4+wqD59JuhNX71rH+voA+esQpMI9dgjdGERdFHsCkMb/Ys005I6tI0Q7s2UMkYVv7uv6nxaBBg6zRFm0xg8MB3cDHYvNIzCvOuDF3oqfs1ahyFIRE0q3UlBhKoMdQ0lgIGnvhb4XvHg2dL8t4bTmas47vUTGw9Di1giBO5z9dQy85MntJggeM4xFJqPSjVqNaQn6cAAzxRRUVD8jTrtcy3uzYkP9xIeeP28N2bqHpa/ZWi9WymeroxxUmWGAvYPVQJqXuyD/+C12RPk9qig5Z7cv2f+GKhWaU+lrfuvviAwUvznan3f0InuP5XuwzOLdBZaVfqkEzmW2bUpPoiGrtRaHAQF8UEBrMOyUqdSuAQl7OPdXth5DQ+1KVhBkQKfmOlIv2kifcoRgu0Cc7/qpxspD4Mj9o1HAOZFm+KP2WX7CNZAsVb4HLp7LZfbv2QsCrKAA2Ek2H0qVh9vBB3idKIEI6eF7M/qjCeyhPxPXtBABiY8QustR6SGFLboQ3OA2ff0CMwVYCXgAvEaO78I4O3SNCNMNrDG2ktXZ6tKXUuMyuHoyS6GA3lzTHqQl+VaHhsZJ+JfoUxEHRhcNEjJzFMyEafCSG8t/y/MvX46o+bkODUcT/cW4r6f+fw5R9plAtH9a9SDosxv/xQ5TnffcuCVmfNKV/sL9g7ibJpYtamiu/+eCveNkNMDWwQ0kICm8ZIydqmMeC7orMtYZct/OTsZACejTTLZB70wTE61RO5pvphoryn13yy6Z0bLVDWVZVzO283jkknbPLk9IiT3e9rb1aolVM8rEK30w43tF5VaO7/L20BBESHmRpsAzTKGPhtBidY0xsBdSUUx+y8IQ0aC7po2IsazEl2oyChgS1Ph/XF0Qci3V20KE2hO7DR96ZrzDYWjhGczGmGGST41QAsFRnHelJxHqTcOPIpyb7VkLdFEptwU8+PVs9aDMN7HO+4OCFOWpfSa6xy153rrjzdxHKn5/OWQgPRbkHwHILWFodJB6xNLQOCIGrsLZMj9dMmoQZwn/53nEeWJLf2MkM9tR1s9oDZlNSzy+MLaGEIePRIKhy563u/rkJHPIy7f5wZBLZT/kNvP/ClLe/SdL/uTrmw7tpxpdgU6WBDU96N0LkTIXGC6YiV3U2JbSkJO+Lr64OFDGSv0U8Dte4Nl2aWP2AhosBHH6GLN/J9Isi/xcrTVeZ0FZY6i+MnYBvyc4ooUu2V2y5FsQWXwfNAt091QHEBtlkTo1dfoPE4fPPg8PxecUJG2tyDF7ATOQ+CmZQrjMrDthu1FnKFn1trpsQvjIAoQ8LEpHfn03cNRTN7gp3Labg9+/QmaNC9RaJSQw4SdxIannSxbLDwa3h017iUsNBqDcAUIy/+gXmi6BO36TDXZUDoI8gBFKilNQeiuFkjVbyrUTGQ6ZS+OlTavc1xj2VOBm+QOEntYN3RD5MpvbFTkvSQRg5bDdB3XYHAqYELK5y3dwecrzcsnoNVbRIucoBDTRgUQcsFdmT7Wx3cQ1JRXSPPE3oqdMvFkVr43B5Qxxp+NIhdEXEmPCYhe+soeyUp5TYUD1fD7qHJus2m0FA7u45bQAd6v5Ni2UvZ+nC/PLi4tyy/4BMKOmvZKKST6F3CM7GlVDVC2bGS0imQwHgbW4Md48Zf89cXwnynxG8qfT0TKHzpgUyEsV2EV+Gk1CXNMidrO51H1xdhfW3x+Cqkw83Z//I/8FV2habhvoEAp/zM4BLnxEDvk/dqBz3KFMly+cSfyrCVd+r7H7hCGue7vHQysZ3pz7lbeoxMWDC0tSa99LIqQuPo+B/bwL9CYv9bboubNasODMeFAhMAuxrGFLXM9SGBQA5YPF4pAw7l24S/F4rmJNLkgdJPNcKyxVoadJM2ga+darQXzKoNE21FEuOmCpjJWvIOMQjZrADU7O5K8zGjMmXMyWTgI8Svjcl/XHD8LCP/arzraisi09VlsxdUlqr4dqbzSqAJhBQeiXVDF7SbKqzltbwaYwZgbyaUNjJv3vEZco+0mtoYgPD5ybKsjjVZc2kryVZ71NsTaj5RWS88gXHWUyzxHaOimoRHsPO7miwsXbwCVxegLmKatjkdKyFORWNdcAZy/v1Ccw19MG3TrwiLob5H7i2f1GA2hHoBYB5KkDfODi/3GzGNmvKNXXCeoYlzOuWjktJ8ai1WKi47F/R/ZeRHO5KD1Cgu9AtAygBhPfLzAeqktAS7u0VpY9FuhtoU2j/NS1Tjd337nVwgtvRNHjdbFF0vz3c7RkXid/bVrtWHdxI25hquEiDk+IwD1GLQs2MmiEBdzDYn8x/XARPxF4GRqIXTOmQX/Mrr7Pqn6HakGuxjDh6e3uIbgyBI17Rzjc0PelHE6n6cDqfdBTI/ysasyPW83ohlUSmpPdGR+KcgG2Immq+LarTsdjWgztQiKKkpXO3U+Ir24eED6wE7bZtIYdqkQLiQ8uZqn4cjqKWpgKk4wqvyxySOLPOojc7BoYieKiU6RyasjI4aa0EMH/dgPYOxxjTxcemxcDbNguQbx3XsAkkN57OfES6DtBbQ7eI8/akDUpSsoNbBdG/NDXKpJZ4eCQdHo+QudAq+J8DqSVswRIUPIU2orUQF5PM8DAWCAp9qHlPfQo618qMkYVMG6MnVbI3k5nhe4SXfUB8prxcPSTcS0wNUuK03CU42516UlPa6gReheJpAS+LoJfj5tPfUPUn8eh/zST/qkzciE1h78cPNJoR5/fGozJK5/k8CIqjWbuyrc5zYq9ZuIdolCha49t6KTa0Pz4h5s2ee7Oy5StFeR8oPukOqslhD+bV0w4n6qZh//IRJO6mB6MYhBwRgOl0nTHEFmxtco6nkoOv34mku0klig86pA0L/enwOOhpwkS/q4s+Y6b02ZHnrBpzkPO4BmgS01iho6ttgX3aml6HPohkBKFxTadbhyn0P6z9Mu/sQm4BHSP6YMUJWmTXT5EM69hw3wfOxepwDfBMxitBaXxtXm+re47+yXnFamhmjcQ5qhBizqe8WQknpZx8KymUe0rkVdL5sBwEiI77NkIp6N43gT6Zcyr1grkBo9epUvuaiZUAJD8r74muEcIaPz6OIjZAR4f5zvKHyxh2erWr42CG2L8Hd8CMR2MWBKvRIvEKL65TUXHw70hhJEqWnGls0QEcXU1o9FJ5qaYQ2i94zBCXbhNRArgKdyiChZvbiRwgTNnPtAHomJwDkTjaxwpe/rXX4bAquG9VFwGbJ1aqYs9crHZQR3vPnrw0+m2VHYHmg4k5STUglYxRpKOgtNmALJOdW9f87ik/YqrlQO5rqSIoxvFeBf8BVMHludO+BqU0t2oQqC1G7CnF6P+rsLr9r5EgBn5PrOygIER8pBZ9qDbubLS1V0NOtSR7pURBBb62bZhay5HvAjzQ2JCa95i7ui3kjQlIxgRf1XhdCeQ/gv/kv5X0qzwX7d2dLCy7Hes7xJd5B9Jqr8QD0QU/kCe7EpLilojD0R578AWP6y+Ozapy6iNNC824wwI2hkVSDj+xnumUkuvB8L43+RNgG+RsEtPEBlRU59ykBnsppS+dROnkC0L9uwqjTdIkClWoZZYFIf0shu0vk/cNf7C90KO5hDbFtXJ2O2KTT7o6z6HuTZCrRUhAGm70V5mV2oq9OjgoFnxx7T9N9V+G6GS6aTjWEPE0HHEOmtLcUf1hoCA5xBWcU3nERUe2cLBH6tl0V97zwnYNcc8WgCWn5tz3wTj4Vylz+m/3pXFGJ8CGQn6qbOC5hE9+xLXQ4W3AVPzFItDWUDIkRju0z5gcyGaTxJZKaNpdGmJ/K6srGKR/XmlbsUWoytGwu7tsFM9dTo3xPQGhozu5slGfz9R0gPkpXSzW+az0iAr3GZ70D4q4ZDawwZHlULXz5YB2UlkfLFDEzP/oZfdCt/O48oegXgb3c0qiI+xT4wPy7vVPMu9BBzr/jKKszGOOOg5AKjlHpd1QiSNz9iQGm/DcI9lM3tOiIvcJNJsK02YTARwZT+BsOAxv/eciZlS7ZQf4HwkU8iQwoATHzVm1oBCZuStHsWBq9n+KU/c8uUCxSzrDLhjXvPDHlt8Tb46wwi/lRKkXjiyQfs4CrKKclmFK/mpWJwzpmkZlEizIqbC6lF587/I/qThxOqXbj4Ny4UURLBDhGWGS4tBu2c655KN6LgjKuLBLIb2UXmEGF/lQA3vq8QmeUx3QtTPZQDJ7ccBjyoKWG2S9L093OlrIx0PD1IK3ZOM7oqEaacskMdyVtV4spE4ZdvUSFKvlcMG1zKbVsqmKEIodH5ZuF2GtWTwApVvndk+FjECKPvOrqwMbzXwG/uXd2h5luFHMhunrTlqG/4lgAydVVNhQgXQjlwNib2dxm1QhR2YZrwlyOzpTXuVAdxPOUmPr36BB+eICzmPt/z5t9TZbKemdvqV/iMd/r4lOPuq2NQkBnt7P9FZi2lK3BKzSw1Fw3httSUD3ju7jzHFu86O9EYvUCphxRz6xHVXqrQ4UEidKMwXeLPKd8GFgdfz4zHlAMj8xRZtxTjyJAz1Zr8tZ9H3Lc8ysnJRcUmodr9ldgHsujxG7zM8lXuHMl+7DYh53Hc57MaCagNsdtIqnFqtfwkOC0iZe/JkQ/VwUdIv/TEYxMYLI8/2/1DORKAcZN8/lrujKJg8j2peGwEgRELjOqXzSCHscZsqMFLLhvYgpvSVXNTUCCC3na6yUBqPj8k+D4rFfRJ0gUwgw/tm9hp/4elcKVYXQIRspvpsyYoYF84obkLpUz7Nla8TP4CswG2IKWNnZ9cfQb8YFTOKJsTfV7Ahao1yblRSvvUmGu3QxalzbMSzNnZa1qRwWJK+j0VoSMfixo6BNgE6L26z/fwjIQ1nTiH7IiXd9RcKyFgV5CD3xFbCD3rW3zORyzvv8V5V6niGD2yYpLcbAAup9gvBl17M+MGWev0QWpCHnNrY0lGYXereExMv+wVLqWzdHQMA1JierILwszRcv7wkvs9U5Iov4AnFbNvlZIrhq0uOF486fn5exvlP0iFNb3UMbbeH73qllDfi48n8gRJeosn0LgD6yp5gVDJjTa01faqz1pxLg/1wryAjvsAD6webo/jKNWIIsMBdx9DSrjK+b4NRxhlaRrFwGuoHs7fC5lQaZxOwhM+Y688LRSj1xlz1ekofyCIAoS+QB9WOyYrLPd2tyz/15BVV5bsZXTsqi2DCqEg1v70qIJve+RcqxSL3lNOhG/0Z5B0pV23HCS9OwZOZfNngc3ju+e2bWSw/14K6BxMQxCqhSUEVKnhK8VhSHVgTAJWGLXQr1so8acMnPhf3beq66XR6AnAUzjVHT/q5XOX3ZauiBXto12k7tiLd+Li7XOM0WBRmzGcMP4uPjx3G7hZdTOyr2zqu/DmZr0/NUoOt/boZ7/EYb9UeJg7mRelylvsR1lpfpnuTCyrCEC2iw0lYg3R+HunZRKzjA8z/draa9GbDVIUgDQWm87GTmHndGdQ/gcYwmMa/6e+FYTGsynTQnHtMh/OgUkzQ+LZea3e7QdtZ0Dc0D5iw9aMjPTiz/hrs8nbPAgiOQ1azX2GnGIYNWZrCb+oDUQyjzGYAvG/6HoZTNTiHd8WAlBsdfjrS3/EA8/nSJsCBAbvkAKD1Licf5dxANBCQ90QcyVhQaBwMWyec4l/YgChrpQjPd5oIzoGz9I9vPtuicg6Ux8cRDFukMISMdJ31HRJg6dR4sZJM7NPiXorHyDNzu4KkdJhmOQ3ujkGBWSTMw0KjHz51ZxKKMFOnuQkJvHEyij2ZW5reSxhwSHDElGk2oz+dNkOIHwo8DGWiAM902qXw66lsgHhygG2URGHJ7MmUe25kvVED9q/pIrkugVNFcawVf3Wt0BV1OD3T3hZH31HA3oKbYG3L8R4F0CEFc+VcKKA5Mq3iBZauS/L6gM9LKLHs67jgB6kCjApjgYWC50QCnx9pTYmV4pUh/nqVAxeWObR/Xfd1JObIXoFcr2PZrXIYt2fnF6aEjHvjNpmfDThTV2ISGYwCnWOpigtAB5SH2tVFunGsIFBFdXI8A9lc4ZUcCki1+wthyCD5CO8fR15nvm3uaNQFiVVd5UP4WYCVc2VYTtqnL+z3wodRLedEu0e9fbdd31pCkk7gabGWAX7ydMkF9xgcx1M0nYmA84SdpF+pMgQTq6/9alSukln2sVtkm6xMHAATZR06VQkQPsjrXuLye0pBn2wyMoamHze38sj9F69BLj0PiaRvzFoJxmJpgBCR46Dpy0R9yY2pvY/HCySAUYlGqtLI46eBULc/Ep92fOIzPTVlxYVhzGQmf5pR1nqG5cY7LMI4JGVr+Dpiotj8Vsj5d9Ss7+ADA58wIpTEKf3J22RYyswbIBKTdG6Q32h/VqXaRko5wQgXIkLz4xKkn5L7ONVHdLvrK22a9eXynwUYnWwlGAAr1cwjQGh6boV5rE/BBXX5Gj154t6rzkREY35SVA4Y2xgAtVETUjpuiYWOQ01T/S1WbpSYKfpvYegeIxZ4yqwrxAXcWNUiqP8tPdzLXYBRtPE8m8uNAUPO7ZrEiAzG7fSv/SKzb92/XXsYZalPti9xaH9XYAz64nosR5Wg4oAGIBZRWc+XIBvAw5Zz51WF1SFf9nCyFASxQVFMHQYcqt/+EiPu+SYVYyzzmblzux5xZ9scm8J2qunLIql4ZjApvnD8v7tU3ayox2T6wQsI7Fus3yMpwrWIWSrJow6Ew1kQcvPj2QIGAJkk7EK6SXpExBstDIHOdKSIvuwj22Qg1q1e1+kqq4XEF9s+nDky1wdS1nRbjdYCH+XDvzfqPL+14d93fyfS/2kepjnuA9dCD9Cv4KeaBRgBynjwPsB2vTeQnpKFWcb52FkTYUjOcjHwy5slq2wCGk9ylnNczqNKqUebxlqclAX+tAaa0r7Ji9DL3+Ep4KFWu0/ih4zF3xeH7ZW/kfKJxzcGUhwCVl3+lJkOPhLHCCDvJEwZjX4FOVvbw7PJA6D0FBMWUX4c6dBRTxJ2t+ppMfAKH5Ey/G/bQvHxljnZcYSXKxWtV+LSKI8Ena4n7cnyaeLk5DQVW9PnGmcHWPM5DJquRBZ9a56i+OpfdW6eWU5BKoEkXviYxvOi6XLU+w/Nz7ByhVKfNMOVstyimUsVzvMt9TVGCXnypHR07DupcaLtuD1BLC52seQlpT7OmoiLWEudmWX0sQeEAA5JJlUhidN2uWcTuvrtLalSf3DZRwcOLJ7IuMgd84vBruYphlU5oS+HZXFZdiqqtULKqbCWSHLn18nJCDHX1mYpTjq40R4AcvblDJHrB60EqdelY5RCoZhxY5iOpXR2LHtNWx9abnoxPI5zCfYACG/H0SorEQG8b279OuUd4UQpikLG918laseDLknoHojjN8loGNp76q05oBO6g1HVJh/7UFhDpwKQ4pIKcgjUOsIBjL8PkfCoHFeCABREAzsu8z9baBRgRPKlF3KtBVTbTIZdYdr8GNVLkBJbeLVv6FKYgbhnfBNc5Q5SpxwPwEASU6yLrWCN33Lkz/nV7LwCudxVi1WakcRRxnFaSlBgp7tLsUC/xir7bzjZVUj3vT1y30dwT8cnjMaVGY5Nzn6t7Pte6e/gWPGC6RzfTKRPDk/5INvn74nogzGcNbvgLazTO8fRm+qzJPPK7xZ24jqeJCdf0KJYBXIEcPccfj2fjVKzj5B/LG9XCFSYS7dQDo1BmUgvt3zdGkC4jKnt22hyDsDJOJK8oPgI0CSZ1W5JNKx4O+7j5CCA3BSoEJkokNzYdiIpsL85gY5jwBqtdtgt56/sEcjivBt5H3uiuTRofo7nh7wVGD/TtZSqXgYPHG6+4C26DHgqDP6Dv5omoT3SVgV+T3BS4Sg7KZgselTDTsUr2Qo9wwOLFGHoV3TjXowefCtWJehbWp93DCIrq34QuOMaQgdg03A+mTT3SvctXbPgtCM2D09ZoX1rSF3of+myTq4bJGejpK7quh9rQEZnJL/SGqEJ1e5H6ozZMtX1sznIfqNIHTtwjcBV61eC8q9dHpMrXOkjKiR7Lf75lfHxMV831j930g6thUrvqEGltHX8TLLK0sIMi9wdH3VPMRF3bH7Ox23U1tQJnLUg1EsKubn+xryRPwdOHdDupu2AjFGCA6WqkJKga/qpnFAdBGAPX26bLW8RsPYuNwcdEZ8muON/A0mgju0yx6KJ+yPam8nahhQ0NQkFjFwK6fyHBZCCfOyDbvmi63KkRGRbYrZWlYRkRMepfdecfYslZB5qvPm+W+7oms2qhDYc+KCxtZigYaWIjN6ZaH1oMUzHM8D3kF00p2Kkk2LFpxgostkwjuP9hhUulg+AIyHrlbdzSnw2ZLvpq7b8C66k2unBMLMeLkU/EgkOXStvotsjyCAc6qmgIHQRgEJMTlA0DU6jC0yDpCl5pezPASOkHpVPiQDag44gpCmzCp7FoLNBF39Xjb7mWXO12TsrPG0dtb2Tqu1lqn1v0R2dhoqPU2RE8e3IzPofZTbTDfKhn/HRoOmg2Q4HJeXw4EPmpw0lubzG4zkjSLvu5ixcbUgc4a7ODcBc6jzlfJ8xxOqY3+JzfN9LRn54HhUAd2EMauvPblYi86uJSa86TchQub+MkXiENPasDDX4zK+0F5rxIv7aj4yAI72T6mI1qtZajh85N4soHwT6SOq8wHOIucinkdeBk9D8ygNxBqbh5MPe4vei7KCR3l4EeMoUX+aqh6cTEPk6XGheyhIzfwDSVSGQO8F5zAQxJMCajUMZBBLZ03Jb9ygqe9fRy9c8MNFZezWjUbyCDwEoT5mtxsk1v7UfXGXXk3ySS8KTKhe0f6XnzVhaHPEzANmgdkuDcYnaYpqKBX1U1q9Gn0E0xpxdjJgkeRMK8m70YAs+vIBmdsJCSBmG0aGjrNjrm/zJtL0iodDoaPyRoMCV2ItxHd1JWPSRwp9JO1f7vMj77A6gQFkV7BHkNtlNvnra5Ral9tpTiM5rRR2rNIn0nH/NSZ+Lp9f8/GX6aaJ6FYZS31X/Ry7brcrjzn/T9rCt0KgoBo0qi6X08O/Z2mFLFqH4VPTnWVg3u1CAgfNGe5/NCbZKBaLacuXi1SkK4fWkqdgCGa8qmf+1XnWwdj4hvNJOjfLzJbQ1GucebZydakrbRMCHkRsTnz4VzgauOxnL6YO6Bwl7sAqAtuWMkpnsWhHmboXjdU3jDVKPjwigRxS0ZZPlmgYlF6Mqs5iI+riU3Y4i7Uw9TW7+ZiOqUvQdWAJ0puF8BKtEgFKXh/L7BpJejPOOKQRbSuppbqnxHyoVD82RkOPZjRNH/IDO90i79Ue+v/cDCbm12WPjkCuNA/VlSxQxLHAaqgssug/C7gI7NOOEPKoE9y0+tjtDvyMTW6qegMX7ZE/DM+lkZbO056qozoII/ddbfIRcYdyC7tcGAHWX7VlKHUmPRcoaWcTTI/Ax+aAR9OkXWVvhuW0H7Esxjc+Yv54DoUJJQih4Vik8pzgvrDRTicdYAJGO/BaGV55xb20QNH/ovs229dNbPCrbaeqoRMZhFvavaKwRZlUORB0ARknIl/0CbqCv1FyZwRhKLhZ7oVOv9Z+QilsZ5Cx9oNR8ZY0wYhJ3gHaWU1MA3mskPwhepWv5NNs+XMzPRz6CoUsKBki1Qk89AkXwk93KNXUDe4kGJLMn6yB3SJmApFYPDvbIcocOUpJ90+yN3lQrFhArlK3VqleHdAJg0p+AzwiBE0GGAy6r2SIwrrZ3XUSOYy+Z0gyaY82j3tP+lK/4Dae2rz33kNr0F3SZ0fmj2EwUI3+InxJkz0HqeZDcUNu1R1a69NeJZWfNyMAUeQqMFJ4h+jklc8Jnh+MtCo33rzHJg2ffijv6HBjuFFmwPOKYVxgZB1TeLrch/KjIQjTPV8YhU22y7MT8Deb8LShuShuolzhv/sSUzjCaKHE1DKaFg//4YHgsU6+XYSfOiDq8XBCUPVCeSnisMhbNp8xqdT2nIdwJrOVw8tIEde08zj1tUsr0jbFK0PltRaVCsGGGN0BAdEX/dfinHQChsybZJx/RtXykE1pBka1cxU1ZHqcfRfaGR36Sm7Jr/plPwQX7lzF3/4VAaeSF3gQ87aJe6oN5c3kq1G433/FrudM+FtP5UNEOh8uld/OnVVn67jJ7HZLE4hwTB4bKLj2ia+/FKysaih+QlZYsH8ZABvcwJiCw/GbMJRX2Srj4AxxcRSiO2wV5P3cNu2KPZb67j9Cg9+VAGfe8TdSYZc09+ip1xjkaHZdbU5ubQiNqP1VMIr53xdmKDfv5ksiCOtYQxjrFQ1OiM/lYK0CFT6ztEgM1NWDme0q22e5xAVNawa7XoorEjB2AH9KXJI7cucHZUbnaSDjFpjppv4iocOrSDZhU4rjIUV5syzbRuayurji2jTEhvMwnSMCx5DaAoJM6u8c6vIDo/lTELsIc6YdCugP7vG+JLJ+PdDIQZ2nu+Nq6LfZoKQ2IcDXXH+ZoSS7IVb3Gh0m5h8ugelh088Ci3Uma/IwujEkZIyeSp7HXQ4g3ORDy5aqLrduyTPXG7jBq+EjpBKztQZpIJS1jmLAjBlzp1VpI77JcSG0sHuL3ozbK74eq1Ajcmm/WY+QN97AIgNFoH6x2U7G9Qc0zlHGqyVTVIZwKHrpwa3D1kqW90DpSLxBsQxF2bSFAbXNG100jffd0nX7IAqxqYqWZrGO5m+FymsjZgLdGJkeBasZ1Yeh509srYP/AIXLu9U//9lddz/eUcee8PvfmQUK+eptFNeW+j6JFNPMTLd2H+/RslFE0e6cQ/HLFDsXpZWBLegGCX0y7woR/MF88rVnFmOTu/AoO6SYIhR5u986mNDQFAuo6qqcWUZjz9h4f6XzqBGZ8pMPSNznAIYysJK+xjtPmGPg5k//GvegoO9VbM2WfzJPbeCoyLfYcO6lwnvFq85ErrxDmhJ65PSuvHs97pqxoKQVRl5xIPB1/daJI0ioupDajREcZZcnTqEd2x9s6RcTOh/0EKcxNcuerr+4g+yFKP4/7uDEj2ZkNVUFLRVLZASFM/CUvTa+0gzjEd/7kXh0YOVV06tCk0zcnyOM5AObrBdWNQgmRtMeHa97J8d85hmwCx9YRYqfwrq09I+zG+4EbPCuqH+PA9NNgGzKxJAenkmRwPZEO65wzx76OQhyYGlSVLu3LT2P3hDvoSAZeODyclmOld1hDdAAb83jMipbjR3cFrd0X0O44dgL+tfRR1mJJqo9IgDP1PEmsV4Nql13Sah5gLyr6jLoXNyaleYkXdwlkIblkjyvT4Eyw6xLQVFewUUVU73qMdQTnTwiOyfwtfVNkknMZTTAPzhi+nsUGeclvIoBs2BtjneAPx9/QcuUcfZKxz/UOA97LD/ayrm38MJsQncvpdwBZjfhzilpYoC+sVVgmR011vxfZl4TpenQEvIFOxFcYYhyev88lttdMpcwxSWwmINgTiEMKBbV/Qau3oJCS5d6ohwrxMSZOnSscdIDg2WqJfiNKooL8tnTSdnbvP8QY8wOYk9Kuhp1iy9E8vO0X13jF+JFwxWdY4W/U60uBrFO+yeahvod8zHCq5JCk9cgJsf3EfukcLDqcjzjdRNNo8YUHyFLAThZLiyEjW+ml87wGQVm1djFhjpVb7/AdMzcBVgS4O3JsxUSN18IHZkNh9lNl9VKPW5Fo1tRHSewjcQOj+8kUUYsYzLcXhDEefmT2yUOPJyi8JrkTSErJte7WIk+LrQ7u0SvC/thgS58SlXg+sN8I97OlNpzfC4ZJxqfzYu+gETbAB9e2jxPFuxyW0LsH0pNgyNT5sOPsnQkNcBeEASmgysws0vDlXCx6twNVgj13zb6SrQHXu78tZyCQbp7EJaWKQmgq9RfNgRZaE7F73RNzE2if9/KjFPxjCkVjosN/HB7JIBqrzyJp182NPd+t5t8t+RHoNP/M0PcqtzP21lDQrhCenO0ulkfEdQtX6F/tbHZR3u8klc/14mw23DTHh4tcOwC+xevCrCLTT5LN6J3YMKc2+n/M0xraBmOu+S7xJsvoiNKQqI4Ahxjm1Y4fpylAdguQU7xrdUXK1bjTsR5Pn2WnnF/r1inr99ceRiKnOPaS767/CmTMqO4Cke83IQuHPcmpbW2e8GtX9pYQcmroXbD3f47LRqTPUHy1Q8fyg8VwEdbTrrnJ8VDAJ5rw6kg+Xq24a4uP1TPTGaQMCkNgOOl8vfWzf6VLHqUH4XzAa1l3Mtgpyw2b5sKQQz3fEMr+YuA6l91MiL7e7PvHGVUk/Sc0AoQECQTv/nRv1z/pWvH+3PtnjuYyLeKISfUmTd7m8Xfvgzkdc/LmKPEO8S/l8be9JbE265CtvjJxR6mj51/mGpaK3QjBvGxW3lDvUAeNFOrVrgd7PNkFVbvoL8RVW+QEz2RCm2ByLCMAqDhurZpyWilayse2m5dy60wwFayQcVDbuzATOzKlzVF7v4fpnGCulVtC0xStPmpKLAgSMuP436U0gEf1h7ZAO7sJdjzFI7CF0RBZb844+aB0ChTu4XVVmWTfk5vnJPpLg4Me8D3WtGGUXxXxurq3iLJNxRhsQzicNjmWtrw44JsypwSC2Z/qPN2DTfwJ8HeXoAokQvPEXIy/7HhtRui0A0FGx77PbAKNkTPtYNQc0OT+/Cc1+hpqslx/cB4O/naL+Ug1A7BX8KqM4rTXamNGjqeAGoW1PtHWn62lSfNSZsHrRjq8BjGtGT73bEllCOvxUvnqhpayQY8/y2oojEjyhH22JqRSVJ/fucIaQlhCW6eG9LkP6RekZm6IuUQWMxvXOrr+SoRXPZ9p69WEtEsWOFMkoUJv2m1RWsdsVcnvYEloOa2mR/S7yeI2/MSFPbTtlokPgDIFnm+9M5ZbONCGDTNcynmzL9TZmbxyzP/H62yoOfxjrvxJCAvpbZtTA7nJZ8wOyC/aossAS6ElDEK/9mjltItnM5VVplaqJM52hfsZj0Wp4UbWJkYMa1b0fybk6cLY51q4vfU8JHZPnU0ws9jpupf9h2pM6T7mK+I39JMANJRsiFo6PMefNe4ZyAS4ADOMPmnHFL7cX6nZVDRTvwSnkCkltuXqtk9x2HxXtpmJik8lDsCS6DwxUnMU8rAZA+sG3/AebQEZ1hapuJYRGab4uXh9H+63zLtP59iLxUs6cgDJ5bcGyXx4ZovkLtdaktbu4N9eyhtArbsE+B86sXlsEChTh9MqAwBxqoTdEQMGB7Azf7cJLBNTCuWwFBskewzPLP5RzHohKmS274cZxkAaKKSvGTmjl3XJAd0vX8iaHhLSWtAIHtaG7OGxwXS8X/6CyP5dUZAaPz6VpDhg29xAnh64lmVmp5TdGTzD93VdisZhFNZnwu5gqPN2xGRH8PBg4MaMsLYatJGZmrIJf7hPmW5NUUKEX+bZJbfRmsxcj5tlGuUyjzhLZKUYUFHPH+OCPxH+oibyyccfwvVb+WNI+sfmV1z0z8tWbAxEnLnZpHyvwPcEVv2GA2Z3kI5KssVAR+fZBk3Fij1gS5jAYo1r+zfHzoYWqtRwwxhMLOps1XjnS0muwHhzCvSd09evnLjy8be87+D4I1qawTLa7jgUluACueaHqo6FXJlUQbXEttTeXaKW7vVzSwsn5h6fyoxGKG39S8itLaxwWIVrL2soeknHm8Terwz6vKMBqZadKyvU9ZXqdw747BtLwlm8hpmJVF8o9n81V3aAEF/RzXtCUV2UMFaCHizTqWMA2lVOqt3fyw6Dylb5kpY4B/R0vVUouGWT64sVn4tOpynxX2HeJ/6uR/YwX51TaKETXwPKpg/4KquK040oCNK5eBztCZWYhI/OlsbfqQ39gLU3FNy9HEnjZVnVbeuXa6kTcvs/Vz6M1Av/8PX0cTRBd28MwCmzfAQhVdhbMz4hFDaVMuzEmJnWhPBocz7Kk5P6HwYdXb9FFDNkIBOb1rrY00SUBTHtDhbGAABWl3rg2SmzPiM8qfXWiQZS4s/BEKe/0OcB0TiRL36l4ifTmJUEa4Wzn1esc1woVdpn75gApaie+EvUlNhvPFdzl6RcWmXA6cXdRg7Mgq/TmubwWD+oWIzaF2qjC5mkyvfatPTp/tVWCTIzoQkRvIY+Ih7r7HqidLFWDPvE2QxPB9ccVXbBeB68aj1cUg7xi7TYKxbgUqBnkBXRlPlZL8gSIWGzcQpDu8bC4aY0WUMUiSSd8Z5z0QtvWXtr5IiUtAjWSiwVFRboAukbxhGGsQDBDVlCp6AFyAdRzhvwGX5rvOGKEkKBLkZf8zsu3oYngRePc7/EcpqVjODYZm8a6vGEjvt4Z7DdnsME9OICuTypR+0Yv2tdamfeN0LoshYQSUCbBkGJ1XjYsP0tTEjBZyyzZrwXDRjLQt56iTJ7VGcmUO7BEtbSRD9uN7dTZJKyz5JBxwjWHx/4GD6Dwu739+MWeH/MxUFqhKNMQMrS2FPcmwYumbguPhtkkbllPkbx8ZRU1riM1IWzddLhD2ne+VzmLCKxE/+cAAAAhyJBnuMn/cmIc+plXi1WgAAAA0cOZQW3jTJ31cRzi4JPypUANhuqeQbScnGm6/OlukcaQDPcADGNBapVKuDGU4AJFlhPZwbgQ8jHzpywU29nq9s8QgUbGY8nRdpoN9AcsbxtfjpynLXrZWGZYxrfspWvu8r37HC7q1eNF5FLhMdB8q9/Sm6uyhaeEmsY92N0v9sfZOdz2eGeJMLNh8rTyFFy0BGGlM9j/ELEudpNnUJmTkySxjLDbzGiEoXFsvTDMm915LHaMDxxCkIOmCpXewz1h31qVAVy5I4FqK22mU7P+wYDzwMoIcsGyFZvWz9JTLf+Os5EyQ1HVole9CaTuQUde/VqnsjzP53hn4u4quKJB6hCmUPnYGl3MByIAVBFALYqGc3XSC4BTE9OOoiI+xsy+PUDTrmVvqwCagJvKP0Cv9PGkm8iOtVZLECQObZuYfQNlfq7H2Xka9edYyEfPncMTWxt7azwMfCfguk9u1GQ4pUhUI6sZYCwKQnf6T/q55K4TKy/K2OxQ9S5efoT3H55ydK0SwMrCrIrIQ0tes/6W+5SS+Nj59C7WIyClqNjF+ZjZOJBDgnbxiYIFbJGOTX9xH0XYit6yfsDTHP/OYQD0BVdJJMB7un08Hon9Jh1RG6MIS6/fIgine8ym5urz4BYdQSrpU0vJJDJ4K8QNO0n60FoBLfso5g8FBvvJ49+xwJQY+EjkKQuyTwMjSiodfnZS72CvK+aM92gK6PJ4TwnhPCeE8J4Twng/IAQVRSX+h0Ao3hXtzpAVyKmTN70/TwPmoogErXn+yZaeeknaU5rT+lIx14f8+0UKRBvhTHK3kt4NBqxREsSMVQjIO3YiGfRcMuzih9Xn/VDphEdSAZUWj4Y78Z53puw+vABjwklSQYrbKd3ReLt/NO89RXQwwNbkSsk/W4epvCG3P9WwTHBQGCNRwsvyS27DNQns4e+Zvcx4yj/ZjUZ4RIz792nhjuERS3i7paQzVl3S0hmrLulpDNWXdLSGasu6V5jwjGmbAJKluRmFg8z/OiOtuiaF6p0WV4jNs8HslaHWLQJPW4BP+ntKtixhhOnm/4HT+S2ML49VOFfVC1N+i+7kbFmH6jkUSzvr0VMbbEPsys6N5dUQTDhOXkuOZNeQG74a381qQ81cafmc+8JgbYbjqIOBY8Tq+krcBBGO8lrDAb/QuvmNEKpg18TmS4k4MqLWtf76PX0UWtaNimB4kAQx0EvwXjIFEETf6WjbukA74J+2l4teSiqM+b6kmHSSyhz9p7oWJQIQBdzq+aKdSLH/HAskl02dhT1dNo+5856QkTlUfG3za7A0jOoAm9I0OAK9MTxrkAyOY31XlLizjqH/wJNJ+g8x5VbbvM8cJvHinKia8bjFf5DQEOyRJDfbVLxG4pf53ES+2P88T5RDatRWLyMNf6Q/DWgQrY38Hs4gxgI0G2Ozt8kaAX4AH+7/RSF9X6hOdCRnpam3fWuHAskcmsYiD+BXjITQkfjbfo9s4tium5BXsJmPFNi8ubyYVcIGRgsZz0ZVH13Z9tPETHgeVvjpEL3lQc2KiYrEhjwD1AcSFbY3a11dc+l1PSiVibWZLwOCZotaBsnSPazbkWmkyQepnn/0H7UwJQj0a8ulzISivQif4xFcIEGa7ySHbC8hkX8Wt0MtdkxEZ0T4FKJIY8oDuQ8Ag41s+OGyVAT0g915Ag5m8JGgivFTeNjbb8CIanKVOh3jxv2yYUcPMFHFdu97pclhmmLqHNcLxuyxOh7Xwf7gMGw3vjz0V1wBV76qJfHUhEwBfGGqHCeuRv9Sb9/bIsBV4Ty4BiixMqypTnGUVZNkly25mIn1qdSWI5T/q1UoHMb1olUeRSay/oSXEHZXMO8DviY6cNnNAR+jcX3y9KeuTJClTvw+Mu7CPoXklimkkj3nHpfzkYfBGUjNhol7MkEpI9YGANQ2ysJZLiNePPXQJr/b6FjF0ZAACsJAAAOcgHt2uLGatc17hfKzUSN6EGGODNDUNYCzAB4C/0OB9x5db1o0ub5zn/6UEI04UE/FCSz92rspYLnoA71ZvJULaUW+r0QQC8BVQ50sloKlg5L6OEPWBm6+Bj3VM4kebr33wuC3OlHOM7DEULYvZ8P0EDesVn7uPPdRZY+HBhR5fjPuf7ASi5KienV0eGDZbY5FylGDhAuCn59Sj2wAAAAAAAAA=" alt="Plano técnico de la caja: vista superior con 4 ranuras, vista frontal de 7,72 por 5,22 cm con ventana de la pantalla, 4 botones y buzzer, y lado derecho con el hueco del USB-C." width="1100" height="659">
+      <figcaption>Plano de la caja, en centímetros y a escala real.</figcaption>
+    </figure>
+    <div class="facts">
+      <div><b>7,72 cm</b><span>de ancho</span></div>
+      <div><b>5,22 cm</b><span>de alto</span></div>
+      <div><b>3,51 cm</b><span>de fondo</span></div>
+      <div><b>0</b><span>tornillos</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="historia">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Historia</p>
+      <h2 class="big">De una idea a un producto terminado.</h2>
+    </div>
+    <div class="timeline">
+      <div class="ev"><time>Septiembre</time><div><h3>La idea y el nombre</h3><p>Una alarma con sentimientos. Entre seis nombres ganó Cronix Sync.</p></div></div>
+      <div class="ev"><time>9 sep</time><div><h3>Primer firmware y primera app</h3><p>El Cronix y el celular empiezan a hablar por Bluetooth.</p></div></div>
+      <div class="ev"><time>19 sep</time><div><h3>El primer Cronix cobra vida</h3><p>Los ojos definitivos, el ánimo funcionando y las tareas llegando desde la app.</p></div></div>
+      <div class="ev"><time>20 sep</time><div><h3>Llega el segundo Cronix</h3><p>Dos unidades reales que se detectan y se mandan su primer saludo.</p></div></div>
+      <div class="ev"><time>21 sep</time><div><h3>Hablan con gestos</h3><p>Seis gestos y ojos de corazón, en los tres estilos.</p></div></div>
+      <div class="ev"><time>Octubre</time><div><h3>La caja</h3><p>Diseño por código, piezas de prueba y el plano a escala real.</p></div></div>
+      <div class="ev"><time>19 oct</time><div><h3>Marca y app 2.0</h3><p>El logo con los ojos de Cronix, la paleta y la app con progreso y avisos.</p></div></div>
+      <div class="ev end"><time>Noviembre</time><div><h3>Proyecto terminado</h3><p>Caras nuevas en el dispositivo, la app y este sitio: todas iguales, píxel por píxel.</p></div></div>
+    </div>
+
+    <div class="decisions">
+      <div class="card decision"><h3>La cara</h3><p class="from">Boca, pupilas y ojos con marco</p><p class="to">Ojos sólidos sin pupila. Toda la emoción en su forma.</p></div>
+      <div class="card decision"><h3>La hora</h3><p class="from">Un reloj extra dentro de la caja</p><p class="to">El celular le presta la hora al conectarse.</p></div>
+      <div class="card decision"><h3>La conexión</h3><p class="from">WiFi, cuentas y un servidor</p><p class="to">Bluetooth directo, sin internet ni cuentas.</p></div>
+      <div class="card decision"><h3>Entre buddies</h3><p class="from">Diálogos de texto en la pantalla</p><p class="to">Gestos: uno hace algo y el otro reacciona.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="marca" class="band">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">La marca</p>
+      <h2 class="big">Cronix.</h2>
+      <p class="lead">El logo son los ojos de Cronix: los mismos dos ojos que ves en su pantalla.</p>
+    </div>
+    <div class="brandrow">
+      <div class="logo-big"><svg aria-hidden="true"><use href="#ojos"/></svg><div><b>CRONIX</b><span>SYNC</span></div></div>
+      <div class="swatches">
+        <div style="--c:#010D23"><i></i><b>Noche</b><span>#010D23</span></div>
+        <div style="--c:#03223F"><i></i><b>Profundo</b><span>#03223F</span></div>
+        <div style="--c:#038BBB"><i></i><b>Azul Cronix</b><span>#038BBB</span></div>
+        <div style="--c:#FCCB6F"><i></i><b>Oro</b><span>#FCCB6F</span></div>
+        <div style="--c:#E19F41"><i></i><b>Ámbar</b><span>#E19F41</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="brand"><svg class="mark" aria-hidden="true"><use href="#ojos"/></svg>CRONIX SYNC</span>
+    <span>Hecho por el equipo Cronix · 2026</span>
+    <span class="done-pill">Proyecto terminado</span>
+  </div>
+</footer>
+
+<script>
+/*
+ * Cara de Cronix en canvas, el mismo dibujo que la pantalla OLED del
+ * dispositivo (firmware/main.py): mismas coordenadas, mismos humores e
+ * iconos, pixel por pixel en 1 bit. Tres estilos de ojos:
+ *   Suave (0)  ojos solidos que se deslizan, parpadean y miran alrededor
+ *   Robot (1)  bloques fijos con cejas y cachetes en linea
+ *   Retro (2)  cuadros dibujados a mano de 1 bit
+ * crearCaraCronix(canvas) devuelve una cara independiente; la app usa la
+ * del canvas #face como window.CronixFace.
+ */
+window.crearCaraCronix = function (canvas) {
+  var ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+
+  var styles = getComputedStyle(document.documentElement);
+  var ON = (styles.getPropertyValue('--screen-glow') || '#63E39B').trim();
+  var eyeStyle = 0; // 0 redondeado, 1 circular, 2 cuadrado (sincronizado con el ESP32)
+  var engine = 0; // 0 Suave, 1 Robot, 2 Retro (sincronizado con el ESP32, EYESTYLE)
+  var lashes = false; // pestañas (personalizacion "mujer"/"hombre", sincronizado con LASHES)
+
+  var MOOD_NORMAL = 0, MOOD_HAPPY = 1, MOOD_SLEEPY = 2, MOOD_ANGRY = 3, MOOD_LOVE = 4;
+
+  // Alto disponible arriba de la barra de animo (y=59) -- todos los
+  // motores centran verticalmente los ojos dentro de esta area.
+  var FACE_AREA_H = 56;
+
+  function setPx(x, y, v) { if (v) ctx.fillRect(x, y, 1, 1); else ctx.clearRect(x, y, 1, 1); }
+  function hline(x, y, w) { ctx.fillRect(x, y, w, 1); }
+  function fillRectV(x, y, w, h, v) { v === 0 ? ctx.clearRect(x, y, w, h) : ctx.fillRect(x, y, w, h); }
+
+  function radioEstilo(w, h) {
+    if (eyeStyle === 1) return Math.floor(Math.min(w, h) / 2);
+    if (eyeStyle === 2) return 3;
+    return 10;
+  }
+
+  // Esquina redondeada -- prueba por fila (no por cuadrantes): el
+  // metodo anterior (4 cuadrantes espejados) dejaba una fisura en cruz
+  // cuando el radio llegaba al maximo en algun eje (circulo u ovalo
+  // completo) -- encontrado probando el estilo 'circular' en el
+  // dispositivo real. Igual a fill_round_rect de main.py.
+  function fillRoundRect(x, y, w, h, r, val) {
+    x = Math.round(x); y = Math.round(y); w = Math.round(w); h = Math.round(h); r = Math.round(r);
+    val = val === undefined ? 1 : val;
+    if (w <= 0 || h <= 0) return;
+    if (r <= 0) { fillRectV(x, y, w, h, val); return; }
+    r = Math.min(r, Math.floor(w / 2), Math.floor(h / 2));
+    var r2 = r * r;
+    for (var dy = 0; dy < h; dy++) {
+      var qy = Math.max(r - dy, dy - (h - 1 - r), 0);
+      if (qy > r) continue;
+      var qy2 = qy * qy;
+      var maxQx = qy2 < r2 ? Math.floor(Math.sqrt(r2 - qy2)) : 0;
+      var qxLimite = r - maxQx;
+      var wFila = w - 2 * qxLimite;
+      if (wFila > 0) fillRectV(x + qxLimite, y + dy, wFila, 1, val);
+    }
+  }
+
+  // Esquina en corte diagonal (chaflan, forma de octagono) -- estilo
+  // 'redondeado' por defecto. A radios chicos en pantalla de 1 bit, un
+  // circulo se ve como un escalon tosco (verificado con vista previa);
+  // el chaflan da un corte limpio sin ese efecto de escalera.
+  function fillOctagonRect(x, y, w, h, r, val) {
+    x = Math.round(x); y = Math.round(y); w = Math.round(w); h = Math.round(h); r = Math.round(r);
+    val = val === undefined ? 1 : val;
+    if (w <= 0 || h <= 0) return;
+    if (r <= 0) { fillRectV(x, y, w, h, val); return; }
+    r = Math.min(r, Math.floor(w / 2), Math.floor(h / 2));
+    fillRectV(x + r, y, w - 2 * r, h, val);
+    fillRectV(x, y + r, r, h - 2 * r, val);
+    fillRectV(x + w - r, y + r, r, h - 2 * r, val);
+    for (var i = 0; i < r; i++) {
+      var n = i + 1;
+      fillRectV(x + r - n, y + i, n, 1, val);
+      fillRectV(x + w - r, y + i, n, 1, val);
+      fillRectV(x + r - n, y + h - 1 - i, n, 1, val);
+      fillRectV(x + w - r, y + h - 1 - i, n, 1, val);
+    }
+  }
+
+  function fillEyeRect(x, y, w, h, r, val) {
+    if (eyeStyle === 0) fillOctagonRect(x, y, w, h, r, val);
+    else fillRoundRect(x, y, w, h, r, val);
+  }
+
+  function fillTriangle(x0, y0, x1, y1, x2, y2, val) {
+    val = val === undefined ? 1 : val;
+    var pts = [[x0, y0], [x1, y1], [x2, y2]].sort(function (a, b) { return a[1] - b[1]; });
+    x0 = pts[0][0]; y0 = pts[0][1];
+    x1 = pts[1][0]; y1 = pts[1][1];
+    x2 = pts[2][0]; y2 = pts[2][1];
+    function edgeX(ya, xa, yb, xb, y) {
+      if (yb === ya) return xa;
+      return xa + (xb - xa) * (y - ya) / (yb - ya);
+    }
+    for (var y = Math.round(y0); y <= Math.round(y2); y++) {
+      var xa = edgeX(y0, x0, y2, x2, y);
+      var xb = y < y1 ? edgeX(y0, x0, y1, x1, y) : edgeX(y1, x1, y2, x2, y);
+      if (xa > xb) { var t = xa; xa = xb; xb = t; }
+      var w = Math.round(xb) - Math.round(xa) + 1;
+      fillRectV(Math.round(xa), y, w, 1, val);
+    }
+  }
+
+  function eraseEllipse(cx, cy, rx, ry) {
+    var ryi = Math.floor(ry);
+    for (var j = -ryi; j <= ryi; j++) {
+      var t = 1 - (j / ry) * (j / ry);
+      if (t <= 0) continue;
+      var dx = rx * Math.sqrt(t);
+      fillRectV(Math.floor(cx - dx + 0.5), Math.floor(cy + j), Math.floor(2 * dx + 0.5), 1, 0);
+    }
+  }
+
+  // corazon de verdad: curva (x2+y2-1)^3 - x2*y3 <= 0, en tramos por fila (igual que main.py)
+  function filasCorazon(w, h) {
+    var filas = [];
+    for (var j = 0; j < h; j++) {
+      var y = 1.25 - (j + 0.5) / h * 2.45, tramos = [], ini = null;
+      for (var i = 0; i <= w; i++) {
+        var dentro = false;
+        if (i < w) {
+          var x = -1.18 + (i + 0.5) / w * 2.36;
+          dentro = Math.pow(x * x + y * y - 1, 3) - x * x * y * y * y <= 0;
+        }
+        if (dentro && ini === null) ini = i;
+        if (!dentro && ini !== null) { tramos.push([ini, i - ini]); ini = null; }
+      }
+      filas.push(tramos);
+    }
+    return filas;
+  }
+  var OJO_CORAZON = filasCorazon(36, 32);
+
+  // iconos de 1 bit (los mismos mapas que ICONOS en main.py)
+  var ICONOS = {
+    corazon: ['.##.##.', '#######', '#######', '.#####.', '..###..', '...#...'],
+    zzz: ['....####', '.......#', '......#.', '.....#..', '....####', '###.....', '..#.....', '.#......', '###.....'],
+    enojo: ['#...#...#', '.#..#..#.', '..#...#..', '.........', '###...###', '.........', '..#...#..', '.#..#..#.', '#...#...#'],
+    sorpresa: ['##', '##', '##', '##', '##', '..', '##'],
+    chispa: ['....#....', '....#....', '...###...', '..#####..', '#########', '..#####..', '...###...', '....#....', '....#....'],
+    mareo: ['..#####..', '.#.....#.', '#..###..#', '#.#...#.#', '#.#.#.#.#', '#.#..#..#', '#..##..#.', '.#.....#.', '..####...'],
+  };
+  function icono(nombre, x, y) {
+    ICONOS[nombre].forEach(function (fila, j) {
+      for (var i = 0; i < fila.length; i++) if (fila[i] === '#') setPx(x + i, y + j, 1);
+    });
+  }
+
+  function drawLashes(lx, rx, yTop, eyeW) {
+    for (var i = 0; i < 3; i++) {
+      var ox = lx + i * 4;
+      line(ox, yTop - 1, ox - 2, yTop - 5);
+      var ox2 = rx + eyeW - 1 - i * 4;
+      line(ox2, yTop - 1, ox2 + 2, yTop - 5);
+    }
+  }
+
+  function eyeSimple(box) {
+    var x = box[0], y = box[1], w = box[2], h = box[3];
+    fillEyeRect(x, y, w, h, radioEstilo(w, h));
+  }
+
+  // ---- estilo Suave: cada ojo se acerca a su forma objetivo con un promedio por cuadro ----
+  function OjosSuaves() {
+    var w = 36, h = 36, espacio = 10;
+    this.lw = this.lwNext = this.lwDef = w;
+    this.lh = this.lhNext = this.lhDef = h;
+    this.rw = this.rwNext = this.rwDef = w;
+    this.rh = this.rhNext = this.rhDef = h;
+    this.lr = this.lrNext = 8;
+    this.rr = this.rrNext = 8;
+    this.lx = this.lxNext = Math.floor((128 - (w + espacio + w)) / 2);
+    this.ly = this.lyNext = Math.floor((FACE_AREA_H - h) / 2);
+    this.rx = this.rxNext = this.lx + this.lw + espacio;
+    this.ry = this.ryNext = this.ly;
+    this.espacio = this.espacioNext = espacio;
+
+    this.lOpen = this.rOpen = true;
+    this.tired = this.angry = this.happy = false;
+    this.tiredH = this.tiredHNext = 0;
+    this.angryH = this.angryHNext = 0;
+    this.happyOff = this.happyOffNext = 0;
+  }
+
+  OjosSuaves.prototype.setMood = function (mood) {
+    this.tired = mood === MOOD_SLEEPY;
+    this.angry = mood === MOOD_ANGRY;
+    this.happy = mood === MOOD_HAPPY || mood === MOOD_LOVE;
+  };
+  OjosSuaves.prototype.setSize = function (w, h) {
+    this.lwNext = this.lwDef = w;
+    this.lhNext = this.lhDef = h;
+    this.rwNext = this.rwDef = w;
+    this.rhNext = this.rhDef = h;
+    var r = radioEstilo(w, h);
+    this.lrNext = r;
+    this.rrNext = r;
+  };
+  OjosSuaves.prototype.setPosition = function (x, y) {
+    this.lxNext = x;
+    this.lyNext = y;
+  };
+  OjosSuaves.prototype.close = function () {
+    this.lhNext = 1;
+    this.rhNext = 1;
+    this.lOpen = false;
+    this.rOpen = false;
+  };
+  OjosSuaves.prototype.open = function () {
+    this.lOpen = true;
+    this.rOpen = true;
+  };
+  OjosSuaves.prototype.blink = function () {
+    this.close();
+    this.open();
+  };
+  OjosSuaves.prototype.limiteX = function () {
+    return Math.max(0, 128 - this.lw - this.espacio - this.rw);
+  };
+  OjosSuaves.prototype.limiteY = function () {
+    return Math.max(0, FACE_AREA_H - this.lhDef);
+  };
+  OjosSuaves.prototype.draw = function () {
+    this.lh = (this.lh + this.lhNext) / 2;
+    this.ly += (this.lhDef - this.lh) / 2;
+    this.rh = (this.rh + this.rhNext) / 2;
+    this.ry += (this.rhDef - this.rh) / 2;
+
+    if (this.lOpen && this.lh <= 1) this.lhNext = this.lhDef;
+    if (this.rOpen && this.rh <= 1) this.rhNext = this.rhDef;
+
+    this.lw = (this.lw + this.lwNext) / 2;
+    this.rw = (this.rw + this.rwNext) / 2;
+    this.espacio = (this.espacio + this.espacioNext) / 2;
+
+    this.lx = (this.lx + this.lxNext) / 2;
+    this.ly = (this.ly + this.lyNext) / 2;
+    this.rxNext = this.lxNext + this.lw + this.espacio;
+    this.ryNext = this.lyNext;
+    this.rx = (this.rx + this.rxNext) / 2;
+    this.ry = (this.ry + this.ryNext) / 2;
+
+    this.lr = (this.lr + this.lrNext) / 2;
+    this.rr = (this.rr + this.rrNext) / 2;
+
+    var lx = this.lx, ly = this.ly, lw = this.lw, lh = this.lh, lr = this.lr;
+    var rx = this.rx, ry = this.ry, rw = this.rw, rh = this.rh, rr = this.rr;
+
+    fillEyeRect(lx, ly, lw, lh, lr);
+    fillEyeRect(rx, ry, rw, rh, rr);
+
+    // sueño: parpado plano; enojo: corte en diagonal hacia el centro
+    this.tiredHNext = this.tired ? lh * 0.48 : 0;
+    this.angryHNext = this.angry ? lh * 0.46 : 0;
+    this.happyOffNext = this.happy ? 1 : 0;
+
+    this.tiredH = (this.tiredH + this.tiredHNext) / 2;
+    if (this.tiredH > 0.5) {
+      fillRectV(lx - 1, ly - 1, lw + 2, this.tiredH + 1, 0);
+      fillRectV(rx - 1, ry - 1, rw + 2, this.tiredH + 1, 0);
+    }
+
+    this.angryH = (this.angryH + this.angryHNext) / 2;
+    if (this.angryH > 0.5) {
+      fillTriangle(lx, ly - 1, lx + lw, ly - 1, lx + lw, ly + this.angryH - 1, 0);
+      fillTriangle(rx, ry - 1, rx + rw, ry - 1, rx, ry + this.angryH - 1, 0);
+    }
+
+    // feliz: ojos en media luna (una elipse borra la parte de abajo)
+    this.happyOff = (this.happyOff + this.happyOffNext) / 2;
+    if (this.happyOff > 0.05) {
+      var baja = (1 - this.happyOff) * lh * 0.8;
+      eraseEllipse(lx + lw / 2, ly + lh * 1.32 + baja, lw * 0.66, lh * 0.7);
+      eraseEllipse(rx + rw / 2, ry + rh * 1.32 + baja, rw * 0.66, rh * 0.7);
+    }
+
+    if (lashes) drawLashes(lx, rx, ly, lw);
+  };
+
+  var ojos = new OjosSuaves();
+  var ultimoSaccade = 0, intervaloSaccade = 3000;
+  var proximoParpadeo = performance.now() + 2000 + Math.random() * 3000;
+
+  // ---- estilo Robot: ojos rectangulares solidos, ancho fijo y alto segun
+  // el humor, con cejas (enojo) y cachetes (feliz) en linea. Mismas
+  // coordenadas que dibujar_robot en main.py.
+  var ROB_EYE_W = 34, ROB_ESPACIO = 14;
+  var ROB_LX = Math.floor((128 - (ROB_EYE_W * 2 + ROB_ESPACIO)) / 2);
+  var ROB_RX = ROB_LX + ROB_EYE_W + ROB_ESPACIO;
+  var ROB_ALTOS = {};
+  ROB_ALTOS[MOOD_NORMAL] = 36;
+  ROB_ALTOS[MOOD_HAPPY] = 28;
+  ROB_ALTOS[MOOD_LOVE] = 28;
+  ROB_ALTOS[MOOD_SLEEPY] = 14;
+  ROB_ALTOS[MOOD_ANGRY] = 20;
+
+  function line(x0, y0, x1, y1) {
+    x0 = Math.round(x0); y0 = Math.round(y0); x1 = Math.round(x1); y1 = Math.round(y1);
+    var dx = Math.abs(x1 - x0), dy = -Math.abs(y1 - y0);
+    var sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1;
+    var err = dx + dy;
+    while (true) {
+      setPx(x0, y0, 1);
+      if (x0 === x1 && y0 === y1) break;
+      var e2 = 2 * err;
+      if (e2 >= dy) { err += dy; x0 += sx; }
+      if (e2 <= dx) { err += dx; y0 += sy; }
+    }
+  }
+
+  var robProximoParpadeo = performance.now() + 2000 + Math.random() * 3000;
+  var robParpadeoHasta = 0;
+
+  function dibujarRobot(moodCode, now) {
+    var h = ROB_ALTOS[moodCode] !== undefined ? ROB_ALTOS[moodCode] : 36;
+
+    if (now > robProximoParpadeo) {
+      robParpadeoHasta = now + 120;
+      robProximoParpadeo = now + 2000 + Math.random() * 4000;
+    }
+    var parpadeando = now < robParpadeoHasta;
+    var hDibujo = parpadeando ? 3 : h;
+
+    // centrado dinamico segun el alto del ojo -- antes el tope era fijo
+    // y los humores con ojo chico (ej. SLEEPY) quedaban flotando arriba.
+    var yTop = Math.floor((FACE_AREA_H - h) / 2);
+    var yDibujo = yTop + Math.floor((h - hDibujo) / 2);
+    fillRectV(ROB_LX, yDibujo, ROB_EYE_W, hDibujo, 1);
+    fillRectV(ROB_RX, yDibujo, ROB_EYE_W, hDibujo, 1);
+    if (!parpadeando) {
+      if (moodCode === MOOD_ANGRY) {
+        line(ROB_LX - 4, yTop - 9, ROB_LX + ROB_EYE_W + 2, yTop - 1);
+        line(ROB_RX - 2, yTop - 1, ROB_RX + ROB_EYE_W + 4, yTop - 9);
+      } else if (moodCode === MOOD_HAPPY || moodCode === MOOD_LOVE) {
+        line(ROB_LX + 2, yTop + h + 2, ROB_LX + ROB_EYE_W - 4, yTop + h + 7);
+        line(ROB_RX + 4, yTop + h + 7, ROB_RX + ROB_EYE_W - 2, yTop + h + 2);
+      }
+    }
+    if (lashes) drawLashes(ROB_LX, ROB_RX, yTop, ROB_EYE_W);
+  }
+
+  // ---- estilo Retro: cuadros de 1 bit dibujados a mano y guardados como
+  // datos (los mismos bytes que en main.py), dos por humor: abierto y
+  // parpadeo.
+  var RETRO_EYE_W = 40, RETRO_EYE_H = 32;
+  var RETRO_LX = Math.floor((128 - (RETRO_EYE_W * 2 + 12)) / 2);
+  var RETRO_RX = RETRO_LX + RETRO_EYE_W + 12;
+  var RETRO_Y_TOP = Math.floor((FACE_AREA_H - RETRO_EYE_H) / 2);
+
+  var _RETRO_NORMAL_0_L = new Uint8Array([0,0,0,0,0,0,0,127,0,0,0,3,255,224,0,0,15,255,248,0,0,31,255,252,0,0,63,255,254,0,0,127,255,255,0,0,255,255,255,128,1,255,255,255,192,1,255,255,255,192,3,255,255,255,224,3,255,255,255,224,3,255,255,255,224,7,255,255,255,240,7,255,255,255,240,7,255,255,255,240,7,255,255,255,240,7,255,255,255,240,7,255,255,255,240,7,255,255,255,240,3,255,255,255,224,3,255,255,255,224,3,255,255,255,224,1,255,255,255,192,1,255,255,255,192,0,255,255,255,128,0,127,255,255,0,0,63,255,254,0,0,31,255,252,0,0,15,255,248,0,0,3,255,224,0,0,0,127,0,0]);
+  var _RETRO_NORMAL_0_R = new Uint8Array([0,0,0,0,0,0,0,254,0,0,0,7,255,192,0,0,31,255,240,0,0,63,255,248,0,0,127,255,252,0,0,255,255,254,0,1,255,255,255,0,3,255,255,255,128,3,255,255,255,128,7,255,255,255,192,7,255,255,255,192,7,255,255,255,192,15,255,255,255,224,15,255,255,255,224,15,255,255,255,224,15,255,255,255,224,15,255,255,255,224,15,255,255,255,224,15,255,255,255,224,7,255,255,255,192,7,255,255,255,192,7,255,255,255,192,3,255,255,255,128,3,255,255,255,128,1,255,255,255,0,0,255,255,254,0,0,127,255,252,0,0,63,255,248,0,0,31,255,240,0,0,7,255,192,0,0,0,254,0,0]);
+  var _RETRO_NORMAL_1_L = new Uint8Array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,31,255,255,255,248,31,255,255,255,248,31,255,255,255,248,31,255,255,255,248,31,255,255,255,248,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+  var _RETRO_NORMAL_1_R = new Uint8Array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,31,255,255,255,248,31,255,255,255,248,31,255,255,255,248,31,255,255,255,248,31,255,255,255,248,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+
+  var _RETRO_HAPPY_0_L = new Uint8Array([0,255,255,255,128,1,255,255,255,192,3,255,255,255,224,3,255,255,255,224,7,255,255,255,240,7,255,0,127,240,15,252,0,31,248,15,240,0,7,248,31,192,0,1,252,31,128,0,0,252,31,0,0,0,124,30,0,0,0,60,28,0,0,0,28,28,0,0,0,28,24,0,0,0,12,24,0,0,0,12,16,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+  var _RETRO_HAPPY_0_R = new Uint8Array([1,255,255,255,0,3,255,255,255,128,7,255,255,255,192,7,255,255,255,192,15,255,255,255,224,15,254,0,255,224,31,248,0,63,240,31,224,0,15,240,63,128,0,3,248,63,0,0,1,248,62,0,0,0,248,60,0,0,0,120,56,0,0,0,56,56,0,0,0,56,48,0,0,0,24,48,0,0,0,24,32,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+  var _RETRO_HAPPY_1_L = new Uint8Array([3,255,255,255,224,3,255,255,255,224,7,255,255,255,240,7,255,0,127,240,15,252,0,31,248,15,240,0,7,248,31,192,0,1,252,31,128,0,0,252,31,0,0,0,124,30,0,0,0,60,28,0,0,0,28,28,0,0,0,28,24,0,0,0,12,24,0,0,0,12,16,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+  var _RETRO_HAPPY_1_R = new Uint8Array([7,255,255,255,192,7,255,255,255,192,15,255,255,255,224,15,254,0,255,224,31,248,0,63,240,31,224,0,15,240,63,128,0,3,248,63,0,0,1,248,62,0,0,0,248,60,0,0,0,120,56,0,0,0,56,56,0,0,0,56,48,0,0,0,24,48,0,0,0,24,32,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+
+  var _RETRO_SLEEPY_0_L = new Uint8Array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,255,224,0,0,63,255,254,0,0,255,255,255,128,3,255,255,255,224,7,255,255,255,240,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,7,255,255,255,240,3,255,255,255,224,0,255,255,255,128,0,63,255,254,0,0,3,255,224,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+  var _RETRO_SLEEPY_0_R = new Uint8Array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,255,192,0,0,127,255,252,0,1,255,255,255,0,7,255,255,255,192,15,255,255,255,224,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,15,255,255,255,224,7,255,255,255,192,1,255,255,255,0,0,127,255,252,0,0,7,255,192,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+  var _RETRO_SLEEPY_1_L = new Uint8Array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,255,240,0,0,255,255,255,128,3,255,255,255,224,7,255,255,255,240,15,255,255,255,248,7,255,255,255,240,3,255,255,255,224,0,255,255,255,128,0,7,255,240,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+  var _RETRO_SLEEPY_1_R = new Uint8Array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,255,224,0,1,255,255,255,0,7,255,255,255,192,15,255,255,255,224,31,255,255,255,240,15,255,255,255,224,7,255,255,255,192,1,255,255,255,0,0,15,255,224,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+
+  var _RETRO_ANGRY_0_L = new Uint8Array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,0,0,0,1,248,0,0,0,127,248,0,0,15,255,248,0,1,255,255,248,0,127,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,0,15,255,255,192,0,15,255,248,0,0,15,255,0,0,0,15,192,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+  var _RETRO_ANGRY_0_R = new Uint8Array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,31,128,0,0,0,31,254,0,0,0,31,255,240,0,0,31,255,255,128,0,31,255,255,254,0,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,0,255,255,255,240,0,3,255,255,240,0,0,31,255,240,0,0,0,255,240,0,0,0,3,240,0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+  var _RETRO_ANGRY_1_L = new Uint8Array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,0,0,0,1,248,0,0,0,127,248,0,0,15,255,248,0,1,255,255,248,0,127,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,248,15,255,255,255,0,15,255,255,192,0,15,255,248,0,0,15,255,0,0,0,15,192,0,0,0,8,0,0,0,0,0,0,0,0,0]);
+  var _RETRO_ANGRY_1_R = new Uint8Array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,31,128,0,0,0,31,254,0,0,0,31,255,240,0,0,31,255,255,128,0,31,255,255,254,0,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,31,255,255,255,240,0,255,255,255,240,0,3,255,255,240,0,0,31,255,240,0,0,0,255,240,0,0,0,3,240,0,0,0,0,16,0,0,0,0,0]);
+
+  var RETRO_FRAMES = {};
+  RETRO_FRAMES[MOOD_NORMAL] = [[_RETRO_NORMAL_0_L, _RETRO_NORMAL_0_R], [_RETRO_NORMAL_1_L, _RETRO_NORMAL_1_R]];
+  RETRO_FRAMES[MOOD_HAPPY] = [[_RETRO_HAPPY_0_L, _RETRO_HAPPY_0_R], [_RETRO_HAPPY_1_L, _RETRO_HAPPY_1_R]];
+  RETRO_FRAMES[MOOD_LOVE] = [[_RETRO_HAPPY_0_L, _RETRO_HAPPY_0_R], [_RETRO_HAPPY_1_L, _RETRO_HAPPY_1_R]];
+  RETRO_FRAMES[MOOD_SLEEPY] = [[_RETRO_SLEEPY_0_L, _RETRO_SLEEPY_0_R], [_RETRO_SLEEPY_1_L, _RETRO_SLEEPY_1_R]];
+  RETRO_FRAMES[MOOD_ANGRY] = [[_RETRO_ANGRY_0_L, _RETRO_ANGRY_0_R], [_RETRO_ANGRY_1_L, _RETRO_ANGRY_1_R]];
+
+  function drawFrame(x, y, w, h, packed) {
+    var rowBytes = (w + 7) >> 3;
+    for (var j = 0; j < h; j++) {
+      var base = j * rowBytes;
+      for (var i = 0; i < w; i++) {
+        if (packed[base + (i >> 3)] & (0x80 >> (i & 7))) setPx(x + i, y + j, 1);
+      }
+    }
+  }
+
+  var retroProximoParpadeo = performance.now() + 2000 + Math.random() * 3000;
+  var retroBlinkHasta = 0;
+
+  function dibujarRetro(moodCode, now) {
+    if (now > retroProximoParpadeo) {
+      retroBlinkHasta = now + 150;
+      retroProximoParpadeo = now + 2000 + Math.random() * 4000;
+    }
+    var idx = now < retroBlinkHasta ? 1 : 0;
+    var frames = RETRO_FRAMES[moodCode] || RETRO_FRAMES[MOOD_NORMAL];
+    var pair = frames[idx];
+    drawFrame(RETRO_LX, RETRO_Y_TOP, RETRO_EYE_W, RETRO_EYE_H, pair[0]);
+    drawFrame(RETRO_RX, RETRO_Y_TOP, RETRO_EYE_W, RETRO_EYE_H, pair[1]);
+    if (lashes) drawLashes(RETRO_LX, RETRO_RX, RETRO_Y_TOP, RETRO_EYE_W);
+  }
+
+  function heartIcon(x, y) { icono('corazon', x, y); }
+  function zzzIcon(x, y) { icono('zzz', x, y); }
+  function angerIcon(x, y) { icono('enojo', x - 4, y - 4); }
+  function mohawk() {
+    for (var i = 0; i < 5; i++) {
+      var xx = 46 + i * 7;
+      for (var k = 0; k <= 3; k++) setPx(xx + k, 8 - k * (8 / 3), 1);
+    }
+  }
+
+  // ---- gestos de "buddy talk": mismos iconos y ojos de corazon que
+  // main.py (draw_surprise_icon, draw_dizzy_icon, draw_alegria_icon,
+  // fill_heart/dibujar_ojos_corazon), para que la app muestre el mismo
+  // gesto que la pantalla del dispositivo. ----
+  function surpriseIcon(x, y) { icono('sorpresa', x + 2, y); }
+  function dizzyIcon(x, y) { icono('mareo', x, y); }
+  function alegriaIcon(x, y) { icono('chispa', x, y); }
+  function ojosCorazon() {
+    [18, 74].forEach(function (x0) {
+      OJO_CORAZON.forEach(function (tramos, j) {
+        tramos.forEach(function (t) { fillRectV(x0 + t[0], 12 + j, t[1], 1, 1); });
+      });
+    });
+  }
+
+  // GESTO_* del firmware -> [humor para la forma de ojos, icono, ojos propios]
+  var GESTOS = [
+    [MOOD_LOVE, null, ojosCorazon],   // 0 AMOR
+    [MOOD_SLEEPY, null, null],        // 1 SUENO
+    [MOOD_ANGRY, null, null],         // 2 ENOJO
+    [MOOD_NORMAL, surpriseIcon, null],// 3 SORPRESA
+    [MOOD_SLEEPY, dizzyIcon, null],   // 4 MAREADO
+    [MOOD_HAPPY, alegriaIcon, null],  // 5 ALEGRIA
+  ];
+  var gesto = null, gestoHasta = 0;
+
+  // icono de "buddy cercano" (otro Cronix Sync detectado por BLE) --
+  // mismo dibujo y posicion que draw_buddy_icon(2, 4) en main.py.
+  function buddyIcon(x, y) {
+    [x, x + 4].forEach(function (cx) {
+      for (var dx = -3; dx <= 3; dx++) {
+        for (var dy = -3; dy <= 3; dy++) {
+          if (dx * dx + dy * dy <= 9) setPx(cx + dx, y + dy, 1);
+        }
+      }
+    });
+  }
+
+  var mood = 70, racha = 0, deviceState = 'home', buddyCercano = false;
+  var lastInteraction = performance.now();
+  var heartUntil = 0;
+
+  // Barra segmentada tipo "bateria": NUM_SEG bloques, solidos si ya
+  // corresponden, huecos (solo contorno) si todavia no -- reemplaza la
+  // barra delgada+puntos anterior, que a resolucion real se veia muy
+  // debil (verificado con vista previa), igual que en main.py.
+  var BAR_NUM_SEG = 10, BAR_SEG_W = 7, BAR_SEG_GAP = 3, BAR_SEG_H = 5;
+  var BAR_TOTAL_W = BAR_NUM_SEG * BAR_SEG_W + (BAR_NUM_SEG - 1) * BAR_SEG_GAP;
+  var BAR_X = Math.floor((128 - BAR_TOTAL_W) / 2), BAR_Y = 59;
+
+  function moodBar(m) {
+    var llenos = Math.round(BAR_NUM_SEG * m / 100);
+    for (var i = 0; i < BAR_NUM_SEG; i++) {
+      var x = BAR_X + i * (BAR_SEG_W + BAR_SEG_GAP);
+      if (i < llenos) {
+        fillRectV(x, BAR_Y, BAR_SEG_W, BAR_SEG_H, 1);
+      } else {
+        hline(x, BAR_Y, BAR_SEG_W);
+        hline(x, BAR_Y + BAR_SEG_H - 1, BAR_SEG_W);
+        for (var yy = 0; yy < BAR_SEG_H; yy++) { setPx(x, BAR_Y + yy, 1); setPx(x + BAR_SEG_W - 1, BAR_Y + yy, 1); }
+      }
+    }
+  }
+
+  function moodLevel(m) {
+    if (m >= 80) return 'GREAT';
+    if (m >= 60) return 'GOOD';
+    if (m >= 40) return 'MEH';
+    if (m >= 20) return 'BAD';
+    return 'TERRIBLE';
+  }
+
+  function draw(now) {
+    ctx.clearRect(0, 0, 128, 64);
+    ctx.fillStyle = ON;
+
+    if (deviceState === 'alert') {
+      var s2 = Math.floor(now / 250) % 2 ? 2 : 0;
+      [18, 74].forEach(function (x0) { fillEyeRect(x0 - s2, 12 - s2, 36 + 2 * s2, 36 + 2 * s2, 10); });
+      icono('sorpresa', 63, 0);
+    } else if (deviceState === 'running') {
+      eyeSimple([18, 14, 36, 36]);
+      eyeSimple([74, 14, 36, 36]);
+    } else {
+      var lvl = moodLevel(mood);
+      var moodCode;
+      var g = now < gestoHasta ? gesto : null;
+      if (g) moodCode = g[0];
+      else if (now < heartUntil) moodCode = MOOD_LOVE;
+      else if (lvl === 'GREAT') moodCode = MOOD_HAPPY;
+      else if (lvl === 'BAD') moodCode = MOOD_SLEEPY;
+      else if (lvl === 'TERRIBLE') moodCode = MOOD_ANGRY;
+      else moodCode = MOOD_NORMAL;
+
+      if (g && g[2]) {
+        g[2]();
+      } else if (engine === 1) {
+        dibujarRobot(moodCode, now);
+      } else if (engine === 2) {
+        dibujarRetro(moodCode, now);
+      } else {
+        ojos.setMood(moodCode);
+        if (moodCode === MOOD_HAPPY || moodCode === MOOD_LOVE) ojos.setSize(40, 32);
+        else if (moodCode === MOOD_SLEEPY) ojos.setSize(36, 28);
+        else if (moodCode === MOOD_ANGRY) ojos.setSize(34, 32);
+        else ojos.setSize(36, 36);
+
+        if (now > proximoParpadeo) {
+          ojos.blink();
+          proximoParpadeo = now + 2000 + Math.random() * 4000;
+        }
+        if (now - ultimoSaccade > intervaloSaccade) {
+          ultimoSaccade = now;
+          intervaloSaccade = 1500 + Math.random() * 2500;
+          if (buddyCercano && Math.random() < 0.5) {
+            // igual que main.py: reaccion simple a un buddy cercano, de
+            // vez en cuando mira de reojo hacia el icono (arriba a la
+            // izquierda) en vez de a cualquier lado al azar.
+            ojos.setPosition(0, 0);
+          } else {
+            // no sube hasta la franja de los iconos (y < 9), asi no los tapa (igual que main.py)
+            var yMax = ojos.limiteY(), yMin = Math.min(9, yMax);
+            ojos.setPosition(Math.random() * ojos.limiteX(), yMin + Math.random() * (yMax - yMin));
+          }
+        }
+
+        ojos.draw();
+      }
+
+      // igual que main.py: la cresta solo se muestra en MOOD_NORMAL, no en
+      // cualquier humor que no tenga icono propio (antes tambien aparecia
+      // en HAPPY/LOVE y en ANGRY con el estilo Robot, sin equivalente
+      // real en el dispositivo).
+      if (g && g[1]) g[1](60, 0);
+      else if (moodCode === MOOD_LOVE) heartIcon(60, 0);
+      else if (moodCode === MOOD_SLEEPY) zzzIcon(104, 0);
+      else if (moodCode === MOOD_ANGRY && engine !== 1) angerIcon(64, 4);
+      else if (moodCode === MOOD_NORMAL && racha >= 5) mohawk();
+
+      if (buddyCercano) buddyIcon(2, 4);
+
+      moodBar(mood);
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  requestAnimationFrame(draw);
+
+  return {
+    setMood: function (m) { mood = m; },
+    setRacha: function (r) { racha = r; },
+    setDeviceState: function (s) { deviceState = s; },
+    setBuddyCercano: function (v) { buddyCercano = !!v; },
+    setStyle: function (n) { eyeStyle = n; },
+    setEngine: function (n) { engine = n; },
+    setLashes: function (v) { lashes = !!v; },
+    showGesto: function (n) {
+      if (!GESTOS[n]) return;
+      gesto = GESTOS[n];
+      gestoHasta = performance.now() + 2400;
+      if (engine === 0 && !gesto[2]) ojos.blink();
+    },
+    pulseHeart: function (ms) { heartUntil = performance.now() + (ms || 1500); },
+    notifyInteraction: function () { lastInteraction = performance.now(); },
+  };
+};
+if (document.getElementById('face')) window.CronixFace = window.crearCaraCronix(document.getElementById('face'));
+
+</script>
+<script>
+(() => {
+  const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cara = id => window.crearCaraCronix(document.getElementById(id));
+
+  // ---- hero: la cara real con chips de animo y los botones de la caja
+  const hero = cara('caraHero');
+  const LED = { normal: '#0A8BC4', feliz: '#2BC48A', amor: '#2BC48A', sueno: '#E2501A', enojo: '#E5484D', alarma: '#E19F41' };
+  // valores reales de animo del firmware: 80+ feliz, 20-39 sueño, menos de 20 enojo
+  const ANIMO = { normal: 70, feliz: 90, amor: 90, sueno: 30, enojo: 10, alarma: 70 };
+  const chips = [...document.querySelectorAll('[data-mood]')];
+  const led = document.getElementById('heroLed');
+  let estilo = 0, esquinas = 0;
+  function setMood(m) {
+    hero.setMood(ANIMO[m]);
+    hero.setDeviceState(m === 'alarma' ? 'alert' : 'home');
+    hero.pulseHeart(m === 'amor' ? 1e9 : 1);
+    led.style.setProperty('--led', LED[m]);
+    chips.forEach(c => c.setAttribute('aria-pressed', String(c.dataset.mood === m)));
+  }
+  chips.forEach(c => c.addEventListener('click', () => setMood(c.dataset.mood)));
+  document.querySelectorAll('.keys button').forEach(b => b.addEventListener('click', () => {
+    const k = b.dataset.k;
+    if (k === 'up') hero.pulseHeart(1800);
+    if (k === 'down') { estilo = (estilo + 1) % 3; hero.setEngine(estilo); }
+    if (k === 'ok') { esquinas = (esquinas + 1) % 3; hero.setStyle(esquinas); }
+    if (k === 'back') setMood('normal');
+  }));
+  setMood('normal');
+
+  // ---- los tres estilos pasan juntos por los humores
+  const estilos = ['caraSuave', 'caraRobot', 'caraRetro'].map((id, i) => { const c = cara(id); c.setEngine(i); return c; });
+  const ciclo = [[70, 0], [90, 0], [90, 1], [30, 0], [10, 0]];
+  const pills = [...document.querySelectorAll('#moodline span')];
+  let paso = 0;
+  function cambiar() {
+    const [animo, amor] = ciclo[paso];
+    estilos.forEach(c => { c.setMood(animo); c.pulseHeart(amor ? 3000 : 1); });
+    pills.forEach((p, i) => p.classList.toggle('on', i === paso));
+    paso = (paso + 1) % ciclo.length;
+  }
+  cambiar();
+  if (!REDUCED) setInterval(cambiar, 3000);
+
+  // ---- app: la misma cara, feliz
+  const app = cara('caraApp');
+  app.setMood(84);
+  document.getElementById('appPet').addEventListener('click', () => app.pulseHeart(1800));
+  document.querySelectorAll('.p-task').forEach(t => t.addEventListener('click', () => {
+    t.classList.toggle('done');
+    if (t.classList.contains('done')) app.pulseHeart(1500);
+  }));
+
+  // ---- buddies: 3 rondas; el que responde nunca repite el gesto que recibio (igual que el firmware)
+  const A = cara('caraA'), B = cara('caraB');
+  A.setMood(70); B.setMood(70);
+  const NOMBRE = ['Amor', 'Sueño', 'Enojo', 'Sorpresa', 'Mareo', 'Alegría'];
+  const pulse = document.getElementById('pulse'), wireMsg = document.getElementById('wireMsg');
+  const gpills = [...document.querySelectorAll('#gestos span')];
+  const pick = no => { const o = [0, 1, 2, 3, 4, 5].filter(g => g !== no); return o[Math.floor(Math.random() * o.length)]; };
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  function show(face, g, rev) {
+    face.showGesto(g);
+    gpills.forEach(p => p.classList.toggle('on', +p.dataset.g === g));
+    pulse.classList.add('on'); pulse.classList.toggle('rev', rev);
+    wireMsg.textContent = NOMBRE[g];
+  }
+  async function encuentro() {
+    let g = pick(-1);
+    for (let r = 0; r < 3; r++) {
+      show(A, g, false); await wait(2600);
+      g = pick(g); show(B, g, true); await wait(2600);
+      g = pick(g);
+    }
+    pulse.classList.remove('on'); wireMsg.textContent = 'Hasta luego';
+    gpills.forEach(p => p.classList.remove('on'));
+    await wait(3000); wireMsg.textContent = '';
+    encuentro();
+  }
+  if (REDUCED) { B.showGesto(0); wireMsg.textContent = 'Amor'; } else encuentro();
+
+  // ---- barra de progreso de lectura
+  const prog = document.getElementById('progress');
+  const onScroll = () => { const h = document.documentElement; prog.style.transform = 'scaleX(' + (h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) + ')'; };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+})();
+</script>
+
+</body>
+</html>

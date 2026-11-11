@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bonesxx007-bot.github.io/cronix-sync/sitemap.xml
