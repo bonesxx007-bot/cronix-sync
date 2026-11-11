@@ -149,6 +149,20 @@ section{padding-block:clamp(84px,12vw,150px);position:relative}
 .tile:hover{transform:translateY(-4px);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 30px 60px -30px rgba(3,139,187,.55)}
 .tile h3{font-size:clamp(20px,2.2vw,26px);line-height:1.15}
 .tile p{color:var(--muted);font-size:15px}
+.precio{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-top:56px}
+.precio>*{min-width:0;padding:clamp(22px,3vw,34px)}
+@media (max-width:760px){.precio{grid-template-columns:1fr}}
+.costo h3{font-size:clamp(20px,2.2vw,26px);margin-bottom:14px}
+.costo table{width:100%;border-collapse:collapse;font-size:15px}
+.costo td{padding:10px 0;border-top:1px solid var(--edge);color:var(--muted)}
+.costo td:last-child{text-align:right;font:600 15px var(--f-display);font-variant-numeric:tabular-nums;color:var(--text);white-space:nowrap;padding-left:12px}
+.costo .total td{border-top:1px solid rgba(63,180,228,.45);padding-top:14px;font:700 17px var(--f-display);color:var(--text)}
+.costo .total td:last-child{color:var(--teal)}
+.venta{display:flex;flex-direction:column;gap:14px;justify-content:center;background:radial-gradient(90% 80% at 100% 0%,rgba(252,203,111,.16),transparent 60%),var(--glass)}
+.venta .monto{font:800 clamp(52px,7vw,84px)/1 var(--f-display);letter-spacing:-.04em;background:linear-gradient(135deg,var(--gold),#E19F41);-webkit-background-clip:text;background-clip:text;color:transparent}
+.venta ul{list-style:none;padding:0;margin:0;display:grid;gap:8px;color:var(--muted)}
+.venta li b{color:var(--text)}
+.venta .nota{font-size:13px;color:var(--muted);opacity:.8}
 .tile .stat{font:800 clamp(48px,6vw,72px)/1 var(--f-display);letter-spacing:-.04em;background:linear-gradient(135deg,var(--teal),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
 .s2{grid-column:span 2}.s3{grid-column:span 3}
 @media (max-width:900px){.bento{grid-template-columns:repeat(2,1fr)}.s2,.s3{grid-column:span 1}}
@@ -282,6 +296,7 @@ footer .brand{font-size:13px}
       <li><a class="l" href="#animo">Ánimo</a></li>
       <li><a class="l" href="#caras">Caras</a></li>
       <li><a class="l" href="#producto">Producto</a></li>
+      <li><a class="l" href="#precio">Precio</a></li>
       <li><a class="l" href="#buddies">Buddies</a></li>
       <li><a class="l" href="#app">App</a></li>
       <li><a class="l" href="#caja">Diseño</a></li>
@@ -396,6 +411,42 @@ footer .brand{font-size:13px}
           <tr><td>Caja</td><td>7,62 × 5,12 × 2,51 cm, sin tornillos</td></tr>
           <tr><td>App</td><td>Android</td></tr>
         </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="precio">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Precio</p>
+      <h2 class="big">Cuesta poco hacerlo.<br>Vale más tenerlo.</h2>
+      <p class="lead">Lo que cuesta armar un Cronix pieza por pieza, y a cuánto se vende.</p>
+    </div>
+    <div class="precio">
+      <div class="card costo">
+        <h3>Costo de producción</h3>
+        <table>
+          <tr><td>Placa IdeaBoard (ESP32)</td><td>₡9 900</td></tr>
+          <tr><td>Pantalla OLED 128 × 64</td><td>₡3 500</td></tr>
+          <tr><td>Buzzer</td><td>₡500</td></tr>
+          <tr><td>Cables Dupont</td><td>₡800</td></tr>
+          <tr><td>Cable USB</td><td>₡1 500</td></tr>
+          <tr><td>Caja impresa en 3D (≈20 g)</td><td>₡500</td></tr>
+          <tr><td>Empaque y etiqueta</td><td>₡500</td></tr>
+          <tr><td>Armado (30 min)</td><td>₡1 500</td></tr>
+          <tr class="total"><td>Total por unidad</td><td>₡18 700</td></tr>
+        </table>
+      </div>
+      <div class="card venta">
+        <p class="eyebrow">Precio de venta</p>
+        <span class="monto">₡27 900</span>
+        <ul>
+          <li><b>₡9 200</b> de ganancia por unidad</li>
+          <li><b>33 %</b> del precio es margen</li>
+          <li>La app se descarga gratis</li>
+        </ul>
+        <p class="nota">Precios estimados en Costa Rica, 2026.</p>
       </div>
     </div>
   </div>
