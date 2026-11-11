@@ -92,7 +92,6 @@ section{padding-block:clamp(84px,12vw,150px);position:relative}
 .screen::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px),linear-gradient(155deg,rgba(255,255,255,.08),transparent 40%);pointer-events:none}
 .grille{display:grid;grid-template-columns:repeat(3,8px);gap:6px;align-self:center;justify-self:center}
 .grille b{width:8px;height:8px;border-radius:50%;background:#050b12;box-shadow:inset 0 1px 2px #000}
-.grille b:nth-child(1),.grille b:nth-child(3),.grille b:nth-child(7),.grille b:nth-child(9){visibility:hidden}
 .keys{display:flex;gap:clamp(8px,2vw,14px);grid-column:1/-1;align-items:center}
 .keys-app{grid-column:1/-1;text-align:center;font:600 13px var(--f-body);color:var(--muted);letter-spacing:.04em;padding-top:4px}
 .keys button{width:clamp(24px,4.6vw,36px);aspect-ratio:1;border-radius:50%;border:0;background:linear-gradient(180deg,#0E3A62,#03223F);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 2px 4px rgba(0,0,0,.6);cursor:pointer;color:var(--muted);font:700 clamp(8px,1.4vw,11px)/1 var(--f-display)}
@@ -1148,7 +1147,7 @@ if (document.getElementById('face')) window.CronixFace = window.crearCaraCronix(
     hero.setMood(ANIMO[m]);
     hero.setDeviceState(m === 'alarma' ? 'alert' : 'home');
     hero.pulseHeart(m === 'amor' ? 1e9 : 1);
-    led.style.setProperty('--led', LED[m]);
+    if (led) led.style.setProperty('--led', LED[m]);
     chips.forEach(c => c.setAttribute('aria-pressed', String(c.dataset.mood === m)));
   }
   chips.forEach(c => c.addEventListener('click', () => setMood(c.dataset.mood)));
